@@ -1,0 +1,65 @@
+import { defineConfig } from '@umijs/max';
+import path from 'path';
+
+export default defineConfig({
+  antd: {},
+  access: {},
+  model: {},
+  initialState: {},
+  request: {},
+  layout: {
+    title: '@umijs/max',
+  },
+  outputPath: path.resolve(__dirname, 'flow'),
+  history: { type: 'hash' },
+  publicPath: process.env.NODE_ENV === 'production' ? './' : `/`,
+  routes: [
+    {
+      path: '/',
+      component: '@/layouts/index',
+      layout: false,
+      routes: [
+        {
+          path: '/',
+          redirect: '/flow',
+        },
+        {
+          name: '流程',
+          path: '/flow',
+          component: './Flow',
+          icon: 'SettingOutlined',
+        },
+        {
+          name: '自定义边和节点',
+          path: '/custom-flow',
+          component: './CustomFlow',
+        },
+        {
+          name: '布局库',
+          path: '/layout',
+          routes: [
+            { path: '/layout', redirect: '/layout/dagre' },
+            { name: 'Dagre', path: '/layout/dagre', component: './Dagre' },
+            { name: 'D3', path: '/layout/d3', component: './D3' },
+          ],
+        },
+        {
+          name: '子流程',
+          path: '/child-flow',
+          component: './ChildFlow',
+        },
+        {
+          name: '使用Store',
+          path: '/store',
+          component: './StateManagementLibrary',
+        },
+        {
+          name: '数据传递',
+          path: '/computing',
+          component: './Computing',
+        },
+      ],
+    },
+  ],
+  npmClient: 'pnpm',
+});
