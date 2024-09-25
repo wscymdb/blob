@@ -1,14 +1,20 @@
 {
   "private": true,
-  "author": "cym01875771@alibaba-inc.com <cym01875771@alibaba-inc.com>",
+  "author": "puta",
   "scripts": {
     "build": "max build",
+    "all:build": "npm run build && npm run docs:build && npm run prepare:docs && npm run copy:docs ",
     "dev": "max dev",
     "format": "prettier --cache --write .",
     "postinstall": "max setup",
     "prepare": "husky",
     "setup": "max setup",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "prepare:docs": "mkdir -p flow/docs",
+    "copy:docs": "cp -r docs/.vitepress/dist/* flow/docs"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
@@ -29,6 +35,7 @@
     "prettier": "^2.8.7",
     "prettier-plugin-organize-imports": "^3.2.2",
     "prettier-plugin-packagejson": "^2.4.3",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.3",
+    "vitepress": "^1.3.4"
   }
 }
