@@ -2031,3 +2031,228 @@ export {};
 ```typescript
 
 ```
+
+### 2.10 内置工具类型补充
+
+1. **`Partial<T>`**：
+
+   - 将类型 `T` 的所有属性变为可选。
+
+   ```typescript
+   interface Person {
+     name: string;
+     age: number;
+   }
+
+   const partialPerson: Partial<Person> = { name: 'John' };
+   ```
+
+2. **`Required<T>`**：
+
+   - 将类型 `T` 的所有属性变为必需。
+
+   ```typescript
+   interface Person {
+     name?: string;
+     age?: number;
+   }
+
+   const requiredPerson: Required<Person> = { name: 'John', age: 30 };
+   ```
+
+3. **`Readonly<T>`**：
+
+   - 将类型 `T` 的所有属性变为只读。
+
+   ```typescript
+   interface Person {
+     name: string;
+     age: number;
+   }
+
+   const readonlyPerson: Readonly<Person> = { name: 'John', age: 30 };
+   // readonlyPerson.name = "Jane"; // Error: Cannot assign to 'name' because it is a read-only property.
+   ```
+
+4. **`Pick<T, K>`**：
+
+   - 从类型 `T` 中选择一组属性 `K` 来构造新的类型。
+
+   ```typescript
+   interface Person {
+     name: string;
+     age: number;
+     info: Record<string, any>;
+   }
+   // 从Person中取出name和age属性 组成一个新的interface
+   /*
+    等同于 
+    interface Person4 {
+      name: string;
+      age: number;
+    }
+    */
+   const p4: Pick<Person4, 'age' | 'name'> = {
+     age: 30,
+     name: 'John',
+   };
+   ```
+
+5. **`Omit<T, K>`**：
+
+   - 从类型 `T` 中排除一组属性 `K` 来构造新的类型。
+
+   ```typescript
+   // 从Person5排除name和info 组成一个新的interface
+   /*
+    等同于 
+    interface Person5 {
+      name: string;
+    }
+    */
+   interface Person5 {
+     name: string;
+     age: number;
+     info: Record<string, any>;
+   }
+
+   const p5: Omit<Person5, 'name' | 'info'> = {
+     age: 30,
+   };
+   ```
+
+6. **`Exclude<T, U>`**：
+
+   - 取`T`和`U`的差集
+
+   ```typescript
+   // 取Method和MethodType的差集  主要适用于联合类型中
+   // 等同于 type Method2 = 'PUT';
+
+   type Method = 'POST' | 'GET' | 'PUT';
+   type MethodType = 'POST' | 'GET';
+   const requestMethod: Exclude<Method, MethodType> = 'PUT';
+   ```
+
+7. **`Extract<T, U>`**：
+
+   - 取`T`和`U`的并集
+
+   ```typescript
+   // 取Method和MethodType的交集  主要适用于联合类型中
+   // 等同于 type Method2 = 'POST' | 'GET';
+
+   type Method2 = 'POST' | 'GET' | 'PUT';
+   type MethodType2 = 'POST' | 'GET';
+   const requestMethod2: Extract<Method, MethodType> = 'POST';
+   ```
+
+8. **`NonNullable<T>`**：
+
+   - 从类型 `T` 中排除 `null` 和 `undefined`。
+
+   ```typescript
+   // 从Sex中排除null和undefined类型
+   // 等同于 type Sex = 'male' | 'female';
+   type Sex = 'male' | 'female' | null | undefined;
+   const sex: NonNullable<Sex> = 'female';
+
+   // 对于接口类型可以如下方式使用
+   interface Person6 {
+     sex: 'male' | null;
+     age: number | null;
+   }
+   type NonNullPerson6 = {
+     [key in keyof Person6]: NonNullable<Person6[key]>;
+   };
+   const p6: NonNullPerson6 = {
+     sex: 'male',
+     age: 30,
+   };
+   ```
+
+9. **`Parameters<T>`**：
+
+   - 获取函数类型 `T` 的参数类型组成的元组类型。
+
+   ```typescript
+   //获取函数类型 T 的参数的类型组成的元组类型。
+   // 等同于 type Params = [number, string];
+
+   type Fun = (a: number, b: string) => void;
+   type Params = Parameters<Fun>;
+   const params: Params = [10, 'hello'];
+   ```
+
+10. **`ConstructorParameters<T>`**：
+
+    - 获取构造函数类型 `T` 的参数类型组成的元组类型。
+
+    ```typescript
+    // 获取构造函数类型的参数的类型组成的元组类型
+    // 等同于 type ConstructorParams = [number, string];
+
+    type Constructor = new (a: number, b: string) => {};
+    type ConstructorParams = ConstructorParameters<Constructor>;
+    const constructorParams: ConstructorParams = [10, 'hello'];
+    ```
+
+11. **`ReturnType<T>`**：
+
+    - 获取函数类型 `T` 的返回值类型。
+
+    ```typescript
+    // 获取函数返回值的类型
+    // 等同于 type Return = string;
+    type Func = () => string;
+    type Return = ReturnType<Func>;
+    ```
+
+12. **`InstanceType<T>`**：
+
+    - 获取构造函数类型 `T` 的实例类型。
+
+    ```typescript
+    class Person {
+      constructor(public name: string, public age: number) {}
+    }
+
+    type PersonInstance = InstanceType<typeof Person>; // Person
+    ```
+
+13. **`ThisType<T>`**：
+
+    - 用于指定上下文对象的类型。这在编写包含 `this` 上下文的对象字面量时非常有用。
+
+    ```typescript
+    interface Person {
+      name: string;
+      greet(): void;
+    }
+
+    const person: ThisType<Person> = {
+      name: 'John',
+      greet() {
+        console.log(`Hello, my name is ${this.name}`);
+      },
+    };
+    ```
+
+14. **`Record<K, T>`**：
+
+    - **特定工具类型**
+
+    - 构造一个对象类型，其键类型为 `K`，值类型为 `T`。
+
+    - Record<K, T> 是一个通用的对象类型构造器，用于创建一个对象类型，其键类型为 K，值类型为 T。它通常用于定义具有特定键和值类型的对象。
+
+    ```typescript
+    type Page = 'home' | 'about' | 'contact';
+    type PageInfo = { title: string };
+
+    const pages: Record<Page, PageInfo> = {
+      home: { title: 'Home' },
+      about: { title: 'About' },
+      contact: { title: 'Contact' },
+    };
+    ```

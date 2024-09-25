@@ -3,18 +3,18 @@
   "author": "puta",
   "scripts": {
     "build": "max build",
-    "all:build": "npm run build && npm run docs:build && npm run prepare:docs && npm run copy:docs ",
+    "build:all": "npm run build && npm run docs:build && npm run prepare:docs && npm run copy:docs ",
+    "copy:docs": "cp -r docs/.vitepress/dist/* flow/docs",
     "dev": "max dev",
+    "docs:build": "vitepress build docs",
+    "docs:dev": "vitepress dev docs",
+    "docs:preview": "vitepress preview docs",
     "format": "prettier --cache --write .",
     "postinstall": "max setup",
     "prepare": "husky",
-    "setup": "max setup",
-    "start": "npm run dev",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs",
     "prepare:docs": "mkdir -p flow/docs",
-    "copy:docs": "cp -r docs/.vitepress/dist/* flow/docs"
+    "setup": "max setup",
+    "start": "npm run dev"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
