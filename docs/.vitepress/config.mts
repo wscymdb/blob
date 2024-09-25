@@ -18,10 +18,11 @@ export default defineConfig({
       { text: '首页 🏠', link: '/' },
       { text: '前端 💻', link: '/web/javascript' },
       { text: '前端运维 🛠️', link: '/web-ops/linux' },
+      { text: '测试 🦄', link: '/test/' },
       { text: '其他 📋', link: '/other/' },
     ],
     sidebar: {
-      '/other': [
+      '/other/': [
         {
           text: '',
           items: [{ text: '环境区别', link: '/other/' }],
@@ -69,6 +70,12 @@ export default defineConfig({
         {
           text: 'Nginx',
           items: [{ text: 'Nginx', link: '/web-ops/nginx' }],
+        },
+      ],
+      '/test/': [
+        {
+          text: '',
+          items: [{ text: '测试面试题', link: '/test/' }],
         },
       ],
     },
