@@ -5,12 +5,12 @@ export default defineConfig({
   title: '葡挞的资料库',
   description: '葡挞的资料库',
   base: '/flow/docs/',
-
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     search: {
       provider: 'local',
     },
+    logo: './logo.png',
     nav: [
       { text: '首页', link: '/' },
       { text: '文档', link: '/javascript' },
@@ -62,9 +62,6 @@ export default defineConfig({
         items: [{ text: 'Nginx', link: '/nginx' }],
       },
     ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' },
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/wscymdb/blob' }],
   },
 });
