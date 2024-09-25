@@ -10,5 +10,7 @@
 /.umi-test
 /dist
 /flow
+/docs/.vitepress/cache
+/docs/.vitepress/dist
 /.mfsu
 .swc
