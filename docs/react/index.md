@@ -496,46 +496,44 @@ class App extends React.Component {
 - 三元运算符
 - 逻辑判断
 
-```react
+```jsx
 class App extends React.Component {
-      constructor() {
-        super()
-        this.state = {
-          isReady: true,
-          friend: {
-            name: 'zs',
-            age: 19
-          }
-        }
-
-      }
-      // 渲染函数
-      render() {
-        const { isReady, friend } = this.state
-        // 1. 条件判断方式一： 使用if进行条件判断
-        let showElement = null
-        if (isReady) {
-          showElement = <h1>我已经准备好了</h1>
-        } else {
-          showElement = <h1>我目前尚未准备</h1>
-        }
-
-
-        return (
-          <div>
-            {/*1.条件判断方式一： 使用if进行条件判断*/}
-            {showElement}
-
-            {/*2.条件判断方式二： 使用三元运算符判断*/}
-            {isReady ? <h1>准备</h1> : <h1>不行</h1>}
-
-            {/*3.条件判断方式三： 使用逻辑与判断*/}
-            {/*场景：比如friedn是服务端返回来的，初始化的时候friedn是null */}
-            {friend && <h1>{friend.name + '=====' + friend.age}</h1>}
-          </div>
-        )
-      }
+  constructor() {
+    super();
+    this.state = {
+      isReady: true,
+      friend: {
+        name: 'zs',
+        age: 19,
+      },
+    };
+  }
+  // 渲染函数
+  render() {
+    const { isReady, friend } = this.state;
+    // 1. 条件判断方式一： 使用if进行条件判断
+    let showElement = null;
+    if (isReady) {
+      showElement = <h1>我已经准备好了</h1>;
+    } else {
+      showElement = <h1>我目前尚未准备</h1>;
     }
+
+    return (
+      <div>
+        {/*1.条件判断方式一： 使用if进行条件判断*/}
+        {showElement}
+
+        {/*2.条件判断方式二： 使用三元运算符判断*/}
+        {isReady ? <h1>准备</h1> : <h1>不行</h1>}
+
+        {/*3.条件判断方式三： 使用逻辑与判断*/}
+        {/*场景：比如friedn是服务端返回来的，初始化的时候friedn是null */}
+        {friend && <h1>{friend.name + '=====' + friend.age}</h1>}
+      </div>
+    );
+  }
+}
 ```
 
 ## 2.8.JSX 中的列表渲染

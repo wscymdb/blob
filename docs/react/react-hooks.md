@@ -127,37 +127,36 @@ function CounterH() {
 
 ### 2.3.3.代码示例
 
-```react
+```jsx
 const App = memo(() => {
-  const [counter, setCounter] = useState(10)
+  const [counter, setCounter] = useState(10);
   // 使用一个useEffect
   useEffect(() => {
     // 当组件渲染完毕后会执行这个回调
-    document.title = counter
-    console.log('添加订阅')
+    document.title = counter;
+    console.log('添加订阅');
 
     // 如果返回一个回调 那么每次更新和卸载的时候都会调用这个回调
     // 可以在这个清除函数中做一些取消订阅/取消监听的操作
     return () => {
-      console.log('取消订阅')
-    }
-  })
+      console.log('取消订阅');
+    };
+  });
   // 再使用一个useEffect
   useEffect(() => {
-    console.log('执行网络请求')
+    console.log('执行网络请求');
     return () => {
-      console.log('操作dom')
-    }
-  })
+      console.log('操作dom');
+    };
+  });
 
   return (
     <div>
       <h2>当前计数：{counter}</h2>
       <button onClick={(e) => setCounter(counter + 1)}>+1</button>
     </div>
-  )
-})
-
+  );
+});
 ```
 
 ### 2.3.4.Effect 性能优化
@@ -175,31 +174,31 @@ const App = memo(() => {
 - 参数二：是一个数组，表示该`useEffect在哪些state发生变化时才重新执行`
   - 说白了就是当前 useEffect 依赖谁，类似于 computed，只有依赖变化了才执行
 
-```react
+```jsx
 const App = memo(() => {
-  const [counter, setCounter] = useState(10)
-  const [message, setMessage] = useState('你好')
+  const [counter, setCounter] = useState(10);
+  const [message, setMessage] = useState('你好');
 
   // 只要页面渲染都会执行
   useEffect(() => {
-    console.log('修改title')
-  })
+    console.log('修改title');
+  });
 
   // 依赖message 当message 变化才执行
   // 参数二是一个数组，可以依赖多个 eg:[message,counter]
   useEffect(() => {
-    console.log('操作DOM')
-  }, [message])
+    console.log('操作DOM');
+  }, [message]);
 
   // 不依赖任何，只有当组件加载的时候执行一次
   useEffect(() => {
-    console.log('发送网络请求，获取服务器的数据')
+    console.log('发送网络请求，获取服务器的数据');
 
     // 因为该useEffect不依赖任何，所以清除的effect也只会在当前组件被卸载时候执行
     return () => {
-      console.log('组件被卸载时执行一次')
-    }
-  }, [])
+      console.log('组件被卸载时执行一次');
+    };
+  }, []);
 
   return (
     <div>
@@ -208,8 +207,8 @@ const App = memo(() => {
       <h2>当前msg：{message}</h2>
       <button onClick={(e) => setMessage('我很好')}>change msg</button>
     </div>
-  )
-})
+  );
+});
 ```
 
 ## 2.4.useContext
@@ -218,22 +217,21 @@ const App = memo(() => {
 
 **注意**： 当前组件依赖的 Context 数据发生变化时，该组件也会重新渲染
 
-```react
-import React, { memo, useContext } from 'react'
-import { ThemeContext, UserContext } from './context'
+```jsx
+import React, { memo, useContext } from 'react';
+import { ThemeContext, UserContext } from './context';
 
 const App = memo(() => {
   //如果 UserContext ThemeContext 传入的数据发生变化 那么当前组件也会重新渲染
-  const user = useContext(UserContext)
-  const theme = useContext(ThemeContext)
+  const user = useContext(UserContext);
+  const theme = useContext(ThemeContext);
   return (
     <div>
       <h2>展示userContext的数据:{user.name}</h2>
       <h2>展示ThemeContext的数据:{theme.color}</h2>
     </div>
-  )
-})
-
+  );
+});
 ```
 
 ## 2.5.useReducer(了解)
@@ -246,8 +244,8 @@ const App = memo(() => {
   - 可以使用 userReducer，只需要一个即可，因为操作的都会放到一个 state 中(就像 redux 的 state 一样)
 - 开发中不推荐这样，如果遇到这样的需求，建议使用 redux
 
-```react
-import React, { memo, useReducer } from 'react'
+```jsx
+import React, { memo, useReducer } from 'react';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -256,18 +254,18 @@ function reducer(state, action) {
         ...state,
         counter: state.counter + action.num,
         message: '我是add',
-      }
+      };
     default:
       return {
         ...state,
         counter: state.counter - action.num,
         message: '我是sub',
-      }
+      };
   }
 }
 
 const App = memo(() => {
-  const [state, dispatch] = useReducer(reducer, { counter: 1 })
+  const [state, dispatch] = useReducer(reducer, { counter: 1 });
 
   return (
     <div>
@@ -277,10 +275,10 @@ const App = memo(() => {
       <button onClick={(e) => dispatch({ type: 'add', num: 1 })}>+</button>
       <button onClick={(e) => dispatch({ type: 'sub', num: 1 })}>-</button>
     </div>
-  )
-})
+  );
+});
 
-export default App
+export default App;
 ```
 
 ## 2.6.useCallback
@@ -293,7 +291,7 @@ export default App
 
 - 当需要`将一个函数传递给子组件时`，最好`使用useCallback进行优化`，将优化后的函数，传递给子组件
 
-```react
+```jsx
 // 解析
 // 看下面案例
 
@@ -306,17 +304,17 @@ export default App
 // 使用useCallback对increment进行优化，他依赖count，只有count变化导致的重新渲染才会使得increment的回调foo重新定义，否则就会使用之前定义的，这时因为increment没有被重新定义，所以子组件不会重新渲染
 
 const YMIncrement = memo((props) => {
-  console.log('YMIncrement渲染了')
+  console.log('YMIncrement渲染了');
   return (
     <div>
       <button onClick={props.increment}>YMIncrement+1</button>
     </div>
-  )
-})
+  );
+});
 
 const App = memo(() => {
-  const [count, setCount] = useState(0)
-  const [message, setMessage] = useState('hello')
+  const [count, setCount] = useState(0);
+  const [message, setMessage] = useState('hello');
 
   // 未被优化的函数
   // const increment = () => {
@@ -326,15 +324,15 @@ const App = memo(() => {
   // 使用useCallback优化的函数
   const increment = useCallback(
     function foo() {
-      console.log(count)
-      setCount(count + 1)
+      console.log(count);
+      setCount(count + 1);
     },
-    [count]
-  )
+    [count],
+  );
 
   const changeMessage = () => {
-    setMessage(Math.random())
-  }
+    setMessage(Math.random());
+  };
 
   return (
     <div>
@@ -344,26 +342,21 @@ const App = memo(() => {
       <h2>message:{message}</h2>
       <button onClick={(e) => changeMessage()}>change message</button>
     </div>
-  )
-})
-
-
+  );
+});
 ```
 
 **必包陷阱问题**
 
-```react
-
+```jsx
 // 必包陷阱问题
 // 现在如果我们将代码写成下面这样，increment表示不依赖任何，即，即使页面重新渲染 increment中的foo也不会被重新定义(解决了一个函数不会被重复定义问题？？)  但是会有问题 +1的时候count变成1之后就不会累加了
 // 原因是 因为不依赖任何 所以 传入的回调foo就不会被再次定义 当点击+1 app渲染 但是foo不会被重新定义   虽然这次更新后count已经变成了1 但是foo内部的count是0 他引用的依旧是第一次app的count，0，所以就是点击很多次+1 foo内部的count依然是0  所以页面上count永远是0+1 =1
 
-
- const increment = useCallback(function foo() {
-   console.log(count)  // 永远是0
-   setCount(count + 1)
- }, [])
-
+const increment = useCallback(function foo() {
+  console.log(count); // 永远是0
+  setCount(count + 1);
+}, []);
 
 // 所以使用useCallback的时候添加一个依赖 当依赖发生变化 useCallback的回调会被重新定义
 // 所以说useCallback并不是让函数只定义一次这个浅薄且有误的理解
@@ -375,17 +368,17 @@ const App = memo(() => {
 - 可以使用 useRef 解决这个问题
   - useRef 在组件多次渲染的时候，返回的是同一个值
 
-```react
-  // 虽然可以使用添加依赖的方式解决 必包陷阱问题
-  // 但是当改变count foo还是会多次定义
-  // 使用 useRef解决
-  // useRef，在组件多次渲染时，返回的是同一个值
-  const countRef = useRef()
-  countRef.current = count
-  const increment = useCallback(function foo() {
-    console.log(countRef.current)
-    setCount(countRef.current + 1)
-  }, [])
+```jsx
+// 虽然可以使用添加依赖的方式解决 必包陷阱问题
+// 但是当改变count foo还是会多次定义
+// 使用 useRef解决
+// useRef，在组件多次渲染时，返回的是同一个值
+const countRef = useRef();
+countRef.current = count;
+const increment = useCallback(function foo() {
+  console.log(countRef.current);
+  setCount(countRef.current + 1);
+}, []);
 ```
 
 **总结**
@@ -403,25 +396,25 @@ const App = memo(() => {
 
 **案例一**
 
-```react
+```jsx
 // 案例中 当点击计数器操作 count发生变化，组件被重新渲染，组件内部的所有东西都会被重新执行一遍，那么calcTotal这个函数也被重新执行
 // 但是calcTotal函数与count没有半毛钱关系，所以没必要执行
 // 使用useMemo 只有当依赖发生了变化时 才会重新返回一次结果
 
 const calcTotal = (num) => {
-  console.log('calcTotl重新执行')
-  return num * 2
-}
+  console.log('calcTotl重新执行');
+  return num * 2;
+};
 
 const App = memo(() => {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   // const calcNum = calcTotal(20)
   // 不依赖任何，当组件重新渲染 calcTotal函数也不会被重新执行 括号内可以写依赖的内容,空表示不依赖任何
-  const calcNum = useMemo(() => calcTotal(20), [])
+  const calcNum = useMemo(() => calcTotal(20), []);
 
   function handleClick() {
-    setCount(count + 1)
+    setCount(count + 1);
   }
 
   return (
@@ -429,40 +422,40 @@ const App = memo(() => {
       <h2>total:{calcNum}</h2>
       <button onClick={(e) => handleClick()}>count:{count}</button>
     </div>
-  )
-})
+  );
+});
 ```
 
 **案例二**
 
-```react
+```jsx
 // 案例中 当点击计数器操作，count发生变化，组件被重新渲染 info又被重新生成了一次 是一个新对象，子组件中接受到新的值 所以重新渲染
 // 其实子组件是不用重新渲染的 避免性能浪费
 // 使用useMemo 只有当依赖发生了变化时 才会重新返回一次结果
 
 const YmUser = memo((props) => {
-  console.log('子组件渲染')
-  return <h2>use:{props.info.name}</h2>
-})
+  console.log('子组件渲染');
+  return <h2>use:{props.info.name}</h2>;
+});
 
 const App = memo(() => {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   function handleClick() {
-    setCount(count + 1)
+    setCount(count + 1);
   }
 
   // 使用useMemo对子组件渲染进行优化
   // const info = { name: 'zs' }
-  const info = useMemo(() => ({ name: 'zs' }), [])
+  const info = useMemo(() => ({ name: 'zs' }), []);
 
   return (
     <div>
       <button onClick={(e) => handleClick()}>count:{count}</button>
       <YmUser info={info} />
     </div>
-  )
-})
+  );
+});
 ```
 
 ## 2.8.useRef
@@ -476,22 +469,21 @@ const App = memo(() => {
 - 获取 DOM 元素、或者组件(但是需要 class 组件)
 - 保存一个数据，解决必包陷阱问题，可参考 useCallback 案例
 
-```react
-import React, { memo, useRef } from 'react'
+```jsx
+import React, { memo, useRef } from 'react';
 
 const App = memo(() => {
-  const titleRef = useRef()
+  const titleRef = useRef();
 
   return (
     <div>
       <h2 ref={titleRef}>Hello 拿捏</h2>
       <button onClick={(e) => console.log(titleRef.current)}>查看dom</button>
     </div>
-  )
-})
+  );
+});
 
-export default App
-
+export default App;
 ```
 
 ## 2.9.useImperativeHandle
@@ -500,47 +492,47 @@ export default App
 
 - 通过 useImperativeHandle 可以只暴露固定的操作
 
-```react
+```jsx
 // 如下案例场景是， 父组件想要操作子组件的input框，父组件拿到子组件input元素后可以做任何操作，但是子组件却希望父组件只能做获取焦点事件
 // 这时候就需要借助useImperativeHandle，useImperativeHandle返回的是一个对象，父组件操作的实际是这个返回的对象，父组件只能操作该对象中有的方法
 
 // 子组件
 const YMIpt = memo(
   forwardRef((props, ref) => {
-    const iptRef = useRef()
+    const iptRef = useRef();
 
     useImperativeHandle(ref, () => {
       return {
         focus() {
           // 操作自己的input
-          iptRef.current.focus()
+          iptRef.current.focus();
         },
-      }
-    })
+      };
+    });
 
     return (
       <div>
         <input ref={iptRef} type="text" />
       </div>
-    )
-  })
-)
+    );
+  }),
+);
 // 父组件
 const App = memo(() => {
-  const iptRef = useRef()
+  const iptRef = useRef();
 
   function handleClick() {
-    iptRef.current.focus()
+    iptRef.current.focus();
     // 无效的操作 子组件没提供该方法
-    iptRef.current.value = ''
+    iptRef.current.value = '';
   }
   return (
     <div>
       <YMIpt ref={iptRef} />
       <button onClick={handleClick}>操作DOM</button>
     </div>
-  )
-})
+  );
+});
 ```
 
 ## 2.10.useLayoutEffect
@@ -551,12 +543,12 @@ const App = memo(() => {
 - 官方给的建议是：`useLayoutEffect` 可能会影响性能。尽可能使用 [`useEffect`](https://zh-hans.react.dev/reference/react/useEffect)。
 - 用法：**useLayoutEffect(setup, dependencies?)**
 
-```react
+```jsx
 // 下面案例 点击按钮设置count的值为0
 // 如果在useEffect中进行判断  因为useEffect是在屏幕出现内容之后执行，所以会先设置成0，然后才设置成判断的值，会有一个闪烁的效果
 // 如果在useLayoutEffect中判断， 因为useLayoutEffect是在屏幕出现内容之前执行，所以页面不会显示0，也不会有闪烁的效果
 const App = memo(() => {
-  const [count, setCount] = useState(99)
+  const [count, setCount] = useState(99);
   // 当内容显示到屏幕上之后执行，会阻塞DOM
   // useLayoutEffect(() => {
   //   console.log('useLayoutEffect：我第二执行')
@@ -567,21 +559,21 @@ const App = memo(() => {
 
   // 当内容显现到屏幕上之后才执行 不会阻塞DOM
   useEffect(() => {
-    console.log('useEffect：我第三执行')
+    console.log('useEffect：我第三执行');
     if (count === 0) {
-      setCount(Math.random() + 99)
+      setCount(Math.random() + 99);
     }
-  })
+  });
 
-  console.log('app render:我第一执行')
+  console.log('app render:我第一执行');
 
   return (
     <div>
       <h1>count:{count}</h1>
       <button onClick={(e) => setCount(0)}>click</button>
     </div>
-  )
-})
+  );
+});
 ```
 
 ## 2.11.自定义 Hook
@@ -606,10 +598,10 @@ const App = memo(() => {
   - **参数二**：可以进行比较来决定是否组件重新渲染
 - `useDispatch`作用就是返回一个 dispatch 函数，用来派发事件
 
-```react
-import React, { memo } from 'react'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { addNumberAction } from './store/features/counter'
+```jsx
+import React, { memo } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { addNumberAction } from './store/features/counter';
 
 // useSelector第二个参数的作用
 // 案例中 在APP和Home组件中 都是用了store中的数据  App中使用的是counter Home中使用的是message
@@ -619,51 +611,47 @@ import { addNumberAction } from './store/features/counter'
 // shallowEqual函数会做一个浅层的比较 从而判断是否要重新渲染组件
 // 添加完第二个参数后 就不会发生案例的情况了
 
-
 const App = memo(() => {
-   // 1.使用useSelector将redux中store的数据映射到组件内部
+  // 1.使用useSelector将redux中store的数据映射到组件内部
   const { count } = useSelector(
     (state) => ({
       count: state.counter.counter,
     }),
-    shallowEqual
-  )
+    shallowEqual,
+  );
   // 2.获取dispatch
-  const dispathc = useDispatch()
+  const dispathc = useDispatch();
 
   function handleClick(num) {
     // 3.派发dispatch
-    dispathc(addNumberAction(num))
+    dispathc(addNumberAction(num));
   }
-  console.log('App render')
+  console.log('App render');
   return (
     <div>
       <h1>count:{count}</h1>
       <button onClick={(e) => handleClick(1)}>+1</button>
       <Home />
     </div>
-  )
-})
-
-
+  );
+});
 
 const Home = memo(() => {
-  console.log('Home render')
+  console.log('Home render');
   const { message } = useSelector(
     (state) => ({
       message: state.counter.message,
     }),
-    shallowEqual
-  )
+    shallowEqual,
+  );
   return (
     <div>
       <h2>Home:{message}</h2>
     </div>
-  )
-})
+  );
+});
 
-export default App
-
+export default App;
 ```
 
 ## 2.13.useId
@@ -685,10 +673,10 @@ export default App
 - 第二项是一个函数 表示`启动该过渡任务`
   - 这个函数接受一个回调
 
-```react
-import React, { memo, useState, useTransition } from 'react'
-import { users } from './namesArray'
-import './style.css'
+```jsx
+import React, { memo, useState, useTransition } from 'react';
+import { users } from './namesArray';
+import './style.css';
 
 // useTransition作用
 // 案例中 有1万条数据用于展示在页面中 当我们输入时会触发input事件，会从1万条数据中匹配输入的内容
@@ -696,15 +684,17 @@ import './style.css'
 // 正确做法应该是 先显示输入的内容 在执行input事件  所以可以借助于useTransition 当输入的时候 告诉react  input事件中setTransition包裹的内容优先级较低 稍后进行更新
 
 const App = memo(() => {
-  const [infos, setInfos] = useState(users)
-  const [pending, setTransition] = useTransition()
+  const [infos, setInfos] = useState(users);
+  const [pending, setTransition] = useTransition();
 
   function handleInput(e) {
     setTransition(() => {
-      const target = e.target.value
-      const filterNames = users.filter((item) => item.username.includes(target))
-      setInfos(filterNames)
-    })
+      const target = e.target.value;
+      const filterNames = users.filter((item) =>
+        item.username.includes(target),
+      );
+      setInfos(filterNames);
+    });
   }
 
   return (
@@ -737,12 +727,10 @@ const App = memo(() => {
         </ul>
       )}
     </div>
-  )
-})
+  );
+});
 
-export default App
-
-
+export default App;
 ```
 
 ## 2.15.useDeferredValue
@@ -751,23 +739,23 @@ export default App
 - 其实 useDeferredValue 效果和 useTransition 是一样的，`只不过useDeferredValue需要接受一个值且返回的是该值的副本，react在渲染的时候发现是useDeferredValue的副本之后 就会推迟更新`
 - 所以如果想要做 loading 效果选择使用 useTransition
 
-```react
-import React, { memo, useDeferredValue, useState } from 'react'
-import { users } from './namesArray'
-import './style.css'
+```jsx
+import React, { memo, useDeferredValue, useState } from 'react';
+import { users } from './namesArray';
+import './style.css';
 // useDeferredValue作用
 // 作用和useTransition作用一样 只不过返回的是传入值的副本
 // 案例中 有1万条数据用于展示在页面中 当我们输入时会触发input事件，会从1万条数据中匹配输入的内容
 // 会看到这么一个现象 当我们输入的时候，按下键盘，此时界面上会停顿约1s之后才会将内容显示在输入框中  原因是当输入的时候会触发input事件 就会枚举这1万条数据 这就会导致页面出现上述现象 这会让用户感到很不舒服
 // 正确做法应该是 先显示输入的内容 在执行input事件  所以可以借助于useDeferredValue 当react发现更新的是useDeferredValue产生的副本时候，就会延迟更新该副本做造成的渲染
 const App = memo(() => {
-  const [infos, setInfos] = useState(users)
-  const deferredValue = useDeferredValue(infos)
+  const [infos, setInfos] = useState(users);
+  const deferredValue = useDeferredValue(infos);
 
   function handleInput(e) {
-    const target = e.target.value
-    const filterNames = users.filter((item) => item.username.includes(target))
-    setInfos(filterNames)
+    const target = e.target.value;
+    const filterNames = users.filter((item) => item.username.includes(target));
+    setInfos(filterNames);
   }
 
   return (
@@ -797,8 +785,8 @@ const App = memo(() => {
         ))}
       </ul>
     </div>
-  )
-})
+  );
+});
 
-export default App
+export default App;
 ```

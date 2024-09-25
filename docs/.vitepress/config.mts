@@ -7,6 +7,9 @@ export default defineConfig({
   base: '/flow/docs/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+    outline: {
+      level: [1, 6], // https://vitepress.dev/zh/reference/default-theme-config#outline
+    },
     search: {
       provider: 'local',
     },
