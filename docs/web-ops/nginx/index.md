@@ -261,6 +261,38 @@ server {
 }
 ```
 
+**实战**
+
+```nginx
+# 需求: 使用example.com/flow/doc/logo.png 正确的访问图片
+# 图片的存放位置是 /usr/share/nginx/html/flow/docs
+
+
+# 使用root方式
+
+# /flow/doc/logo.png 这个就是匹配到的location
+# 因为root会拼接location 所以实际访问的路径是 /usr/share/nginx/html/flow/docs/logo.png
+location ~* ^/flow/docs/.*\.(jpg|png|jpeg|gif|mp4|mp3|pdf|docx|txt|heic)$ {
+    root /usr/share/nginx/html;
+    expires 24h;
+}
+
+# 使用alias方式
+
+# /flow/doc/logo.png 这个就是匹配到的location
+# 因为alias不会拼接location 所以实际访问的路径是 /usr/share/nginx/html
+# 所以我们要获取到图片的名称和后缀
+# 使用$1 和 $2 获取到 图片名称和后缀
+# 在 Nginx 配置中，正则表达式捕获组可以用来引用匹配到的部分。捕获组是通过圆括号 () 来定义的，每个捕获组会被分配一个编号，从左到右依次编号为 $1, $2, $3，等等。
+# 还可以直接捕获到名称和后缀 使用这种正则 (.*\.(jpg|png|jpeg|gif|mp4|mp3|pdf|docx|txt|heic))$
+# 这样图片和后缀就是一组的了直接使用$1就可以获取到了
+
+location ~* ^/flow/docs/(.*)\.(jpg|png|jpeg|gif|mp4|mp3|pdf|docx|txt|heic)$ {
+    alias /usr/share/nginx/html/flow/docs/$1.$2;
+    expires 24h;
+}
+```
+
 # 5.核心模块
 
 **在使用下面的模块时候 使用`nginx -V`检查一下是否有下面的模块 避免不生效**
