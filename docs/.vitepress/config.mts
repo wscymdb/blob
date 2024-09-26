@@ -5,6 +5,7 @@ export default defineConfig({
   title: '葡挞的资料库',
   description: '葡挞的资料库',
   base: '/flow/docs/',
+  lastUpdated: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     outline: {
@@ -13,7 +14,11 @@ export default defineConfig({
     search: {
       provider: 'local',
     },
-    logo: './logo.jpg',
+    docFooter: {
+      prev: '上一夜',
+      next: '下一夜',
+    },
+    logo: '/logo.jpg',
     nav: [
       { text: '首页 🏠', link: '/' },
       { text: '前端 💻', link: '/web/javascript' },

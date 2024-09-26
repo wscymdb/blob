@@ -174,7 +174,7 @@ TCP 三次握手建立连接：
 
 - 增加：**insert into value**
 
-- ```mysql
+- ```sql
   insert into 表名 (列1, 列2, 列3, ...)value (值1, 值2，值1，... )
 
   注意：指定库：库名.表名
@@ -183,7 +183,7 @@ TCP 三次握手建立连接：
 
 - 删除：**delete from where**
 
-- ```mys
+- ```sql
   delete from 表名 where 条件
 
   delete from likeshop.la_user where id = '1';
@@ -192,7 +192,7 @@ TCP 三次握手建立连接：
 
 - 修改/更新：**update 表名 set 列 1=值 1，列 2 = 值 2 where**
 
-- ```mysql
+- ```sql
   update 表名 set 列1=值1,列2 = 值2 where  条件
 
   update likeshop.la_uesr set uesrname = '张三', mobile = '18348451569' where id = 1
@@ -200,14 +200,14 @@ TCP 三次握手建立连接：
 
 - 查询：**select**
 
-- ```mysql
+- ```sql
   1.查询手机号为18348451569的用户
   select likeshop.la_user from mobile = '18348451569';
   ```
 
 - 去重查询：**select distinct 条件 from**
 
-- ```mysql
+- ```sql
   select distinct 条件1, 条件2 from 表名
 
   SELECT DISTINCT mobile FROM `la_user`
@@ -215,7 +215,7 @@ TCP 三次握手建立连接：
 
 - 排序查询：**desc 倒序 、asc 正序**
 
-- ```mysql
+- ```sql
   select 条件 from 表名 order by 排序条件
 
   students表，包含id、name和age列。现在我们想按照年龄对学生进行升序排序，如果年龄相同，则按照姓名进行降序排序
@@ -227,7 +227,7 @@ TCP 三次握手建立连接：
 
 - 限制查询个数
 
-- ```mysql
+- ```sql
   SELECT mobile, business_name, address FROM la_business WHERE business_name = '哈哈家政' LIMIT 1;
   ```
 
