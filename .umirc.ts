@@ -58,6 +58,11 @@ export default defineConfig({
           path: '/computing',
           component: './Computing',
         },
+        {
+          name: '幻灯片',
+          path: '/ppt',
+          component: './PPT',
+        },
       ],
     },
   ],
