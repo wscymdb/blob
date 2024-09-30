@@ -63,6 +63,11 @@ export default defineConfig({
           path: '/ppt',
           component: './PPT',
         },
+        {
+          name: 'web Audio',
+          path: '/audio',
+          component: './WebAudio',
+        },
       ],
     },
   ],
