@@ -54,7 +54,10 @@ export default defineConfig({
         },
         {
           text: 'Git',
-          items: [{ text: 'Git查漏补缺', link: '/web/git' }],
+          items: [
+            { text: 'Git查漏补缺', link: '/web/git' },
+            { text: 'Git提交规范', link: '/web/git/git-commit' },
+          ],
         },
         {
           text: '工程化',
