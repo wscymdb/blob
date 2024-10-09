@@ -87,7 +87,10 @@ export default defineConfig({
       '/test/': [
         {
           text: '',
-          items: [{ text: '测试面试题', link: '/test/' }],
+          items: [
+            { text: '自动化测试', link: '/test/auto' },
+            { text: '测试面试题', link: '/test/' },
+          ],
         },
       ],
     },
