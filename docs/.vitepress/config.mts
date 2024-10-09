@@ -53,6 +53,10 @@ export default defineConfig({
           items: [{ text: 'typescript', link: '/web/typescript' }],
         },
         {
+          text: 'Git',
+          items: [{ text: 'Git查漏补缺', link: '/web/git' }],
+        },
+        {
           text: '工程化',
           items: [
             { text: 'node基础', link: '/web/engineering/node-basic' },
