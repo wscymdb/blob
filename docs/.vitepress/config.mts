@@ -30,7 +30,10 @@ export default defineConfig({
       '/other/': [
         {
           text: '',
-          items: [{ text: '环境区别', link: '/other/' }],
+          items: [
+            { text: '环境区别', link: '/other/' },
+            { text: '无感刷新token', link: '/other/two-tokens' },
+          ],
         },
       ],
       '/web/': [
@@ -51,6 +54,13 @@ export default defineConfig({
         {
           text: 'Typescript',
           items: [{ text: 'typescript', link: '/web/typescript' }],
+        },
+        {
+          text: 'Git',
+          items: [
+            { text: 'Git查漏补缺', link: '/web/git' },
+            { text: 'Git提交规范', link: '/web/git/git-commit' },
+          ],
         },
         {
           text: '工程化',
@@ -80,7 +90,10 @@ export default defineConfig({
       '/test/': [
         {
           text: '',
-          items: [{ text: '测试面试题', link: '/test/' }],
+          items: [
+            { text: '自动化测试', link: '/test/auto' },
+            { text: '测试面试题', link: '/test/' },
+          ],
         },
       ],
     },

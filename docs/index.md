@@ -12,7 +12,7 @@ hero:
   actions:
     - theme: brand
       text: 开始
-      link: /react
+      link: /web/javascript
     - theme: alt
       text: flow
       link: http://114.55.110.144/flow
