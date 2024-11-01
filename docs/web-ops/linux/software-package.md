@@ -187,7 +187,7 @@ systemctl restart redis.service
 
 ---
 
-# 6 `wget` 使用笔记
+# 6. wget 使用笔记
 
 ## 1. 简介
 
@@ -223,37 +223,37 @@ sudo yum install wget
 
 ## 4. 基本用法
 
-### 下载单个文件
+**1. 下载单个文件**
 
 ```sh
 wget http://example.com/file.zip
 ```
 
-### 下载并保存为指定文件名
+**2. 下载并保存为指定文件名**
 
 ```sh
 wget -O newfile.zip http://example.com/file.zip
 ```
 
-### 断点续传
+**3. 断点续传**
 
 ```sh
 wget -c http://example.com/file.zip
 ```
 
-### 下载整个网站
+**4. 下载整个网站**
 
 ```sh
 wget -r http://example.com
 ```
 
-### 限制下载速度
+**5. 限制下载速度**
 
 ```sh
 wget --limit-rate=200k http://example.com/file.zip
 ```
 
-### 后台下载
+**6. 后台下载**
 
 ```sh
 wget -b http://example.com/file.zip
@@ -261,31 +261,31 @@ wget -b http://example.com/file.zip
 
 ## 5. 示例
 
-### 下载一个文件并保存为特定文件名
+**1. 下载一个文件并保存为特定文件名**
 
 ```sh
 wget -O myfile.zip http://example.com/file.zip
 ```
 
-### 递归下载一个网站，限制深度为 2
+**2. 递归下载一个网站，限制深度为 2**
 
 ```sh
 wget -r -l 2 http://example.com
 ```
 
-### 限制下载速度为 100 KB/s
+**3. 限制下载速度为 100 KB/s**
 
 ```sh
 wget --limit-rate=100k http://example.com/file.zip
 ```
 
-### 在后台下载文件
+**4. 在后台下载文件**
 
 ```sh
 wget -b http://example.com/file.zip
 ```
 
-### 下载需要身份验证的文件
+**5. 下载需要身份验证的文件**
 
 ```sh
 wget --user=username --password=password http://example.com/protectedfile.zip
@@ -293,7 +293,7 @@ wget --user=username --password=password http://example.com/protectedfile.zip
 
 ## 6. 高级用法
 
-### 下载多个文件
+**1. 下载多个文件**
 
 可以将多个 URL 写入一个文件，然后使用 `-i` 选项进行下载：
 
@@ -301,7 +301,7 @@ wget --user=username --password=password http://example.com/protectedfile.zip
 wget -i urls.txt
 ```
 
-### 镜像网站
+**2. 镜像网站**
 
 使用 `-m` 选项可以镜像整个网站：
 
@@ -309,7 +309,7 @@ wget -i urls.txt
 wget -m http://example.com
 ```
 
-### 忽略证书错误
+**3. 忽略证书错误**
 
 在下载 HTTPS 内容时，如果遇到证书错误，可以使用 `--no-check-certificate` 选项忽略：
 
@@ -317,140 +317,178 @@ wget -m http://example.com
 wget --no-check-certificate https://example.com/file.zip
 ```
 
-# 6 wget 使用
+# 7. curl 使用笔记
 
-## 6.1. 简介
+## 什么是 `curl`？
 
-`wget` 是一个用于从网络上下载文件的命令行工具。它支持 HTTP、HTTPS 和 FTP 协议，并且可以在后台运行，适用于下载大文件或需要断点续传的情况。
+`curl` 是一个用于从命令行或脚本中进行数据传输的工具。它支持多种协议，包括 HTTP、HTTPS、FTP、SFTP、SMTP 等。`curl` 的名字来源于“Client URL”，它的主要功能是从网络上获取数据或将数据发送到网络。
 
-## 6.2. 安装
+## 使用场景
 
-在大多数 Linux 发行版中，`wget` 通常已经预装。如果没有，可以使用包管理工具进行安装：
+1. **测试 API 接口**
 
-**在基于 Debian 的系统上 (如 Ubuntu)**
+   - 开发人员常用 `curl` 来测试 RESTful API 接口。通过发送各种 HTTP 请求（GET、POST、PUT、DELETE 等），可以验证 API 的功能和响应。
 
-```sh
-sudo apt-get install wget
-```
+2. **下载文件**
 
-**在基于 Red Hat 的系统上 (如 CentOS)**
+   - `curl` 可以用于从网络上下载文件，尤其是在需要自动化下载任务时。例如，定期从服务器下载日志文件或备份文件。
 
-```sh
-sudo yum install wget
-```
+3. **上传文件**
 
-## 6.3. 常见选项
+   - 可以使用 `curl` 将文件上传到服务器，适用于需要将数据发送到远程服务器的场景，如上传图片、文档等。
 
-\- `-O <file>` (Output): 将下载的内容保存为指定的文件名。
+4. **模拟浏览器请求**
 
-\- `-c` (Continue): 断点续传，继续下载未完成的文件。
+   - `curl` 可以通过设置请求头来模拟浏览器的行为，这在需要绕过某些网站的限制或进行爬虫时非常有用。
 
-\- `-r` (Recursive): 递归下载整个网站。
+5. **自动化脚本**
 
-\- `-l <level>` (Level): 设置递归下载的深度。
+   - 在自动化脚本中，`curl` 常用于与外部服务交互，如获取天气信息、发送通知到聊天应用等。
 
-\- `--limit-rate=<rate>` (Limit Rate): 限制下载速度，单位可以是 `k` (KB/s) 或 `m` (MB/s)。
+6. **网络调试**
 
-\- `-b` (Background): 后台下载。
+   - 网络管理员和开发人员可以使用 `curl` 来调试网络请求，查看请求和响应头信息，分析网络问题。
 
-\- `-q` (Quiet): 安静模式，不输出下载信息。
+7. **数据传输**
 
-\- `-P <prefix>` (Prefix): 将文件下载到指定的目录。
+   - `curl` 支持多种协议，因此可以用于各种数据传输任务，如通过 FTP 上传或下载文件，通过 SMTP 发送邮件等。
 
-\- `--user=<user>` (User) 和 `--password=<password>` (Password): 用于需要身份验证的网站。
+8. **安全测试**
+   - 在安全测试中，`curl` 可以用于测试服务器的安全性，例如通过发送特定的请求来检查服务器的响应和漏洞。
 
-## 6.4. 基本用法
+## 常用选项
 
-**下载单个文件**
+- `-X`：指定请求方法（GET, POST, PUT, DELETE 等），等价于 `--request`
+- `-H`：添加请求头，等价于 `--header`
+- `-d`：发送 POST 数据，等价于 `--data`
+- `-o`：将输出保存到文件，等价于 `--output`
+- `-O`：将输出保存为 URL 中的文件名，等价于 `--remote-name`
+- `-L`：跟随重定向，等价于 `--location`
+- `-u`：使用用户名和密码进行认证，等价于 `--user`
+- `-v`：显示详细的请求和响应信息，等价于 `--verbose`
+- `-I`：仅查看响应头，等价于 `--head`
+- `-x`：使用代理，等价于 `--proxy`
+- `-F`：上传文件或表单数据，等价于 `--form`
 
-```sh
-wget http://example.com/file.zip
-```
+## 基本用法
 
-**下载并保存为指定文件名**
+1. **基本请求**
 
-```sh
-wget -O newfile.zip http://example.com/file.zip
-```
+   - 执行一个简单的 GET 请求：
+     ```bash
+     curl http://example.com
+     ```
+   - 使用 HTTPS：
+     ```bash
+     curl https://example.com
+     ```
 
-**断点续传**
+2. **保存响应到文件**
 
-```sh
-wget -c http://example.com/file.zip
-```
+   - 使用 `-o`（等价于 `--output`）选项指定输出文件：
+     ```bash
+     curl -o output.html http://example.com
+     ```
+   - 使用 `-O`（等价于 `--remote-name`）选项保存文件名与 URL 中的相同：
+     ```bash
+     curl -O http://example.com/file.txt
+     ```
 
-**下载整个网站**
+3. **发送 POST 请求**
 
-```sh
-wget -r http://example.com
-```
+   - 发送带有数据的 POST 请求：
+     ```bash
+     curl -d "param1=value1&param2=value2" http://example.com/resource
+     ```
+   - 发送 JSON 数据：
+     ```bash
+     curl -H "Content-Type: application/json" -d '{"key1":"value1", "key2":"value2"}' http://example.com/resource
+     ```
 
-**限制下载速度**
+4. **添加请求头**
 
-```sh
-wget --limit-rate=200k http://example.com/file.zip
-```
+   - 使用 `-H`（等价于 `--header`）选项添加自定义请求头：
 
-**后台下载**
+     ```bash
+     curl -H "Authorization: Bearer token" http://example.com/resource
 
-```sh
-wget -b http://example.com/file.zip
-```
+     # 添加多个请求头
+     curl -H "Authorization: Bearer token" -H "Content-Type: application/json" http://example.com/resource
+     ```
 
-## 6.5. 示例
+5. **处理重定向**
 
-**下载一个文件并保存为特定文件名**
+   - 使用 `-L`（等价于 `--location`）选项跟随重定向：
+     ```bash
+     curl -L http://example.com
+     ```
 
-```sh
-wget -O myfile.zip http://example.com/file.zip
-```
+6. **查看请求和响应头**
 
-**递归下载一个网站，限制深度为 2**
+   - 使用 `-v`（等价于 `--verbose`）选项查看详细信息：
+     ```bash
+     curl -v http://example.com
+     ```
+   - 仅查看响应头：
+     ```bash
+     curl -I http://example.com
+     ```
 
-```sh
-wget -r -l 2 http://example.com
-```
+7. **上传文件**
 
-**限制下载速度为 100 KB/s**
+   - 使用 `-F`（等价于 `--form`）选项上传文件：
+     ```bash
+     curl -F "file=@/path/to/file" http://example.com/upload
+     ```
 
-```sh
-wget --limit-rate=100k http://example.com/file.zip
-```
+8. **使用代理**
 
-**在后台下载文件**
+   - 使用 `-x`（等价于 `--proxy`）选项指定代理：
+     ```bash
+     curl -x http://proxyserver:port http://example.com
+     ```
 
-```sh
-wget -b http://example.com/file.zip
-```
+9. **认证**
+   - 使用 `-u`（等价于 `--user`）选项进行基本认证：
+     ```bash
+     curl -u username:password http://example.com
+     ```
 
-**下载需要身份验证的文件**
+# 8. wget 和 curl 的区别
 
-```sh
-wget --user=username --password=password http://example.com/protectedfile.zip
-```
+`curl`和`wget`都是用于从命令行下载文件的工具，但它们有一些关键的区别：
 
-## 6.6. 高级用法
+1. **基本功能**：
 
-**下载多个文件**
+   - `wget`：主要用于下载文件，支持递归下载，可以下载整个网站。
+   - `curl`：不仅可以下载文件，还可以用于发送各种类型的 HTTP 请求（如 POST、PUT 等），更适合用于 API 测试和与服务器进行复杂的交互。
 
-可以将多个 URL 写入一个文件，然后使用 `-i` 选项进行下载：
+2. **协议支持**：
 
-```sh
-wget -i urls.txt
-```
+   - `wget`：主要支持 HTTP、HTTPS 和 FTP 协议。
+   - `curl`：支持更多的协议，包括 HTTP、HTTPS、FTP、FTPS、SFTP、SCP、LDAP、SMB 等。
 
-**镜像网站**
+3. **递归下载**：
 
-使用 `-m` 选项可以镜像整个网站：
+   - `wget`：支持递归下载，可以下载整个网站。
+   - `curl`：不支持递归下载。
 
-```sh
-wget -m http://example.com
-```
+4. **输出**：
 
-**忽略证书错误**
+   - `wget`：默认将下载的文件保存到当前目录。
+   - `curl`：默认将输出发送到标准输出（stdout），需要使用`-o`或`-O`选项来保存到文件。
 
-在下载 HTTPS 内容时，如果遇到证书错误，可以使用 `--no-check-certificate` 选项忽略：
+5. **续传功能**：
 
-```sh
-wget --no-check-certificate https://example.com/file.zip
-```
+   - `wget`：支持断点续传。
+   - `curl`：也支持断点续传，但需要使用`-C`选项。
+
+6. **代理支持**：
+
+   - 两者都支持通过代理进行下载，但配置方式有所不同。
+
+7. **易用性**：
+   - `wget`：通常更简单易用，适合快速下载文件。
+   - `curl`：功能更强大，但也更复杂，适合需要更多控制和选项的场景。
+
+根据具体需求选择使用哪个工具，如果只是简单的文件下载，`wget`可能更方便；如果需要复杂的 HTTP 请求或支持更多协议，`curl`可能更合适。
