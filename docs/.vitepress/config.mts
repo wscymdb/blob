@@ -86,6 +86,10 @@ export default defineConfig({
           text: 'Nginx',
           items: [{ text: 'Nginx', link: '/web-ops/nginx' }],
         },
+        {
+          text: 'Jenkins',
+          items: [{ text: 'Jenkins', link: '/web-ops/jenkins' }],
+        },
       ],
       '/test/': [
         {
