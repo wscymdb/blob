@@ -114,9 +114,15 @@ java -jar jenkins.war
 3. `创建第一个管理员用户`页面可以创建一个新的管理员用户，输入用户名和密码，然后点击`保存并继续`按钮。或者直接点击`使用admin账户继续`。
 4. `实例配置`页面保持不动即可，然后点击`保存并完成`按钮。
 
+## 构建配置实战
+
+文字的描述总是那么苍白无力，所以我写了图片的教程看下面的链接
+
+[链接实战](https://juejin.cn/post/7433584884859289651)
+
 ## FAQ
 
-## nohup 命令是啥？
+### nohup 命令是啥？
 
 nohup 是一个命令，用于在后台运行命令，即使终端关闭也不会停止运行。它的全称是 "No Hang Up"，意思是 "不挂起"。
 
@@ -130,7 +136,7 @@ nohup command &
 nohup ./script.sh &
 ```
 
-## 怎么查看 nohup 命令的输出或状态
+### 怎么查看 nohup 命令的输出或状态
 
 **查看 nohup 输出文件**：nohup 命令会将命令的输出重定向到一个名为 nohup.out 的文件中。可以使用 cat 命令或其他文本查看工具来查看这个文件的内容，例如：
 
@@ -144,7 +150,7 @@ cat nohup.out
  ps aux | grep your_command
 ```
 
-## 怎么选择某个 JDK
+### 怎么选择某个 JDK
 
 如果系统中安装了多个版本的 JDK，可以使用以下命令来选择默认的 JDK 版本：
 
@@ -154,7 +160,7 @@ sudo update-alternatives --config java
 
 执行以上命令后，会列出系统中所有已安装的 JDK 版本，并提示选择默认的 JDK 版本。根据提示输入对应的数字，即可选择默认的 JDK 版本。
 
-## 那怎么关闭 nohup 启动的 Jenkins
+### 那怎么关闭 nohup 启动的 Jenkins
 
 要关闭通过 nohup 启动的 Jenkins 进程，您可以使用以下步骤：
 
@@ -172,7 +178,7 @@ sudo update-alternatives --config java
 
 3. 确保 Jenkins 进程已经被成功终止。您可以再次运行`ps aux | grep jenkins.war`来检查 Jenkins 进程是否已经关闭。
 
-## 那怎么重启 nohup 启动的 Jenkins
+### 那怎么重启 nohup 启动的 Jenkins
 
 要重启通过 nohup 启动的 Jenkins 进程，您可以按照以下步骤操作：
 
