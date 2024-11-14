@@ -24,6 +24,7 @@ export default defineConfig({
       { text: '前端 💻', link: '/web/javascript' },
       { text: '前端运维 🛠️', link: '/web-ops/linux' },
       { text: '测试 🦄', link: '/test/' },
+      { text: '术语 🧑‍🏫', link: '/term/' },
       { text: '其他 📋', link: '/other/' },
     ],
     sidebar: {
@@ -97,6 +98,15 @@ export default defineConfig({
           items: [
             { text: '自动化测试', link: '/test/auto' },
             { text: '测试面试题', link: '/test/' },
+          ],
+        },
+      ],
+      '/term/': [
+        {
+          text: '',
+          items: [
+            { text: '技术领域', link: '/term/' },
+            { text: '职场领域', link: '/term/business/' },
           ],
         },
       ],
