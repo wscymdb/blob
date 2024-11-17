@@ -1,0 +1,48 @@
+.low-code {
+  position: fixed;
+  inset: 20px;
+  background-color: #e8e8e8;
+
+  &-top {
+    position: absolute;
+    left: 280px;
+    right: 280px;
+    height: 80px;
+    background-color: aliceblue;
+  }
+
+  &-left,
+  &-right {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 270px;
+  }
+
+  &-left {
+    left: 0;
+    background-color: skyblue;
+  }
+
+  &-right {
+    right: 0;
+    background-color: aquamarine;
+  }
+
+  &-container {
+    padding: 80px 270px 0;
+    height: 100%;
+    box-sizing: border-box;
+
+    &-canvas {
+      height: 100%;
+      overflow: scroll;
+
+      &__content {
+        position: relative;
+        margin: 20px auto;
+        background-color: antiquewhite;
+      }
+    }
+  }
+}

@@ -70,6 +70,11 @@ export default defineConfig({
         },
       ],
     },
+    {
+      path: '/low-code',
+      component: './LowCode',
+      layout: false,
+    },
   ],
   npmClient: 'pnpm',
 });

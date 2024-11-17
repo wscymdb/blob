@@ -1,0 +1,32 @@
+.material {
+  height: 100%;
+  padding: 10px 10px 0;
+  overflow-y: auto;
+
+  &-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    cursor: move;
+    background-color: #fff;
+
+    &-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99;
+    }
+
+    &-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+}
