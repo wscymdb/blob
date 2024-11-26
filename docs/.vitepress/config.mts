@@ -34,6 +34,7 @@ export default defineConfig({
           items: [
             { text: '环境区别', link: '/other/' },
             { text: '无感刷新token', link: '/other/two-tokens' },
+            { text: '网址收集', link: '/other/urls' },
           ],
         },
       ],
