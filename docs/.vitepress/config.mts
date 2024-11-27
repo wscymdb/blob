@@ -6,6 +6,7 @@ export default defineConfig({
   description: '葡挞的资料库',
   base: '/flow/docs/',
   lastUpdated: true,
+  head: [['link', { rel: 'icon', href: '/flow/docs/favicon.ico' }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     outline: {
