@@ -235,7 +235,79 @@ http {
 
 **nginx 有一个主配置文件`nginx.conf`里面有一个，里面只有一个`http`, `http `中可以有多个`server`**
 
-## 4.1.root 和 alias 的区别
+## 4.1 server 详细配置
+
+Nginx 的 `server` 模块是其配置文件中的一个核心部分，用于定义虚拟服务器的配置。每个 `server` 块可以包含多个指令，用于指定如何处理传入的请求。以下是 `server` 模块的一些关键指令和概念：
+
+### 基本结构
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        root /var/www/html;
+        index index.html index.htm;
+    }
+}
+```
+
+### 关键指令
+
+| 指令名称 | 用途 | 示例 | 是否必填 |
+| --- | --- | --- | --- |
+| **`listen`** | 指定 Nginx 监听的 IP 地址和端口。 | `listen 80;` 或 `listen 127.0.0.1:8080;` | 是 |
+| **`server_name`** | 定义虚拟主机的域名。 | `server_name example.com www.example.com;` | 是 |
+| **`root`** | 指定请求的根目录。 | `root /var/www/html;` | 否 |
+| **`index`** | 指定默认的索引文件。 | `index index.html index.htm;` | 否 |
+| **`location`** | 定义请求路径的处理方式。 | `location /images/ { root /data; }` | 否 |
+| **`error_page`** | 定义错误页面的处理。 | `error_page 404 /404.html;` | 否 |
+| **`rewrite`** | 用于重写请求的 URL。 | `rewrite ^/oldpath/(.*)$ /newpath/$1 permanent;` | 否 |
+| **`proxy_pass`** | 用于反向代理，将请求转发到另一个服务器。 | `location /api/ { proxy_pass http://backend_server; }` | 否 |
+
+### 其他常用指令
+
+- **`access_log`** 和 **`error_log`**：指定访问日志和错误日志的位置。
+- **`client_max_body_size`**：限制客户端请求体的最大大小。
+- **`ssl_certificate`** 和 **`ssl_certificate_key`**：用于配置 HTTPS 的 SSL 证书。
+
+### 示例
+
+以下是一个更复杂的 `server` 块示例：
+
+```nginx
+server {
+    listen 80;
+    server_name example.com www.example.com;
+
+    root /var/www/example;
+    index index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location /images/ {
+        alias /data/images/;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+
+    location /api/ {
+        proxy_pass http://api_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+这个示例展示了如何配置基本的静态文件服务、错误页面、路径别名以及反向代理。通过灵活使用这些指令，你可以根据需要配置 Nginx 以满足不同的应用场景。
+
+## 4.2 root 和 alias 的区别
 
 - 使用 root 那么在访问的时候就会**拼接 location 对应的地址**
 
@@ -255,7 +327,7 @@ server {
 # 当访问/random的时候 nginx会去 /opt/app文件夹下寻找文件
 server {
   location /random {
-    root /opt/app;
+    alias /opt/app;
     index index.html;
   }
 }
@@ -292,6 +364,55 @@ location ~* ^/flow/docs/(.*)\.(jpg|png|jpeg|gif|mp4|mp3|pdf|docx|txt|heic)$ {
     expires 24h;
 }
 ```
+
+## 4.3 server 中的 root 和 location 中的 root 的区别
+
+在 Nginx 配置中，`root` 指令可以在 `server` 块和 `location` 块中使用，但它们的作用范围和优先级有所不同。以下是它们的区别：
+
+- **`server` 块中的 `root`**：提供一个默认的根目录，适用于整个服务器块。
+- **`location` 块中的 `root`**：用于特定路径的根目录，优先级高于 `server` 块中的 `root`。
+
+### **`server` 块中的 `root`**
+
+- **作用范围**：当 `root` 指令在 `server` 块中定义时，它为该服务器块中的所有请求提供一个默认的根目录。
+- **优先级**：如果在 `location` 块中没有定义 `root`，则会使用 `server` 块中的 `root`。
+- **示例**：
+
+  ```nginx
+  server {
+      listen 80;
+      server_name example.com;
+      root /var/www/html;  # 默认根目录
+
+      location / {
+          # 使用 server 块中的 root
+      }
+  }
+  ```
+
+### **`location` 块中的 `root`**
+
+- **作用范围**：当 `root` 指令在 `location` 块中定义时，它仅适用于该特定的 `location` 块。
+- **优先级**：`location` 块中的 `root` 会覆盖 `server` 块中的 `root`，即如果在 `location` 中定义了 `root`，则该 `location` 使用自己的 `root`。
+- **示例**：
+
+  ```nginx
+  server {
+      listen 80;
+      server_name example.com;
+      root /var/www/html;  # 默认根目录
+
+      location /images/ {
+          root /data;  # 覆盖 server 块中的 root
+      }
+  }
+  ```
+
+### 具体行为
+
+- 当请求路径匹配某个 `location` 块时，Nginx 会检查该 `location` 块中是否定义了 `root`。如果有，则使用该 `root`。
+- 如果 `location` 块中没有定义 `root`，则回退使用 `server` 块中的 `root`。
+- 这意味着 `location` 块中的 `root` 指令具有更高的优先级，可以用于为特定路径提供不同的根目录。
 
 # 5.核心模块
 
