@@ -27,6 +27,7 @@ export default defineConfig({
       { text: '测试 🦄', link: '/test/' },
       { text: '术语 🧑‍🏫', link: '/term/' },
       { text: '其他 📋', link: '/other/' },
+      { text: '网站导航 🧭', link: 'http://nav.puta99.fun' },
     ],
     sidebar: {
       '/other/': [

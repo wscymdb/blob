@@ -15,7 +15,7 @@ hero:
       link: /web/javascript
     - theme: alt
       text: flow
-      link: http://114.55.110.144/flow
+      link: http://www.puta99.fun/flow/
 
 features:
   - icon: 🤡

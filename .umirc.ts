@@ -70,6 +70,11 @@ export default defineConfig({
         },
       ],
     },
+    {
+      path: '/nav',
+      component: './Nav',
+      layout: false,
+    },
   ],
   npmClient: 'pnpm',
 });

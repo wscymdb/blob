@@ -1,0 +1,61 @@
+.nav {
+  @function shadownFun($n) {
+    $shadows: '#{random(100)}vw #{random(100)}vh #fff';
+
+    @for $i from 2 through $n {
+      $shadows: '#{$shadows}, #{random(100)}vw #{random(100)}vh #fff';
+    }
+
+    @return unquote($shadows);
+  }
+
+  height: 100vh;
+  background: #000;
+
+
+  .content {
+    padding: 24px;
+    position: absolute;
+    z-index: 999;
+    color:#fff;
+  }
+
+  .sky {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    animation: moveUp 25s linear infinite;
+
+  
+    @for $i from 1 through 3 {
+      .layer#{$i}  {
+        $size: #{$i+1}px;
+        width: $size;
+        height: $size;
+        border-radius: 50%;
+        box-shadow: shadownFun(200 * $i);
+  
+        &::after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 100vh;
+          width: inherit;
+          height: inherit;
+          box-shadow: inherit;
+          border-radius: inherit;
+        }
+      }
+    }
+
+   
+  }
+
+
+
+  @keyframes moveUp {
+    100% {
+      transform: translateY(-100vh);
+    }
+  }
+}

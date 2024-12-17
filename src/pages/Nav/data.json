@@ -1,0 +1,80 @@
+[
+  {
+    "title": "前端库",
+    "subtitle": "前端库相关的导航",
+    "description": "前端库相关的导航",
+    "updateTime": "2020-04-23",
+    "children": [
+      {
+        "title": "highlight.js",
+        "subtitle": "",
+        "updateTime": "2020-04-23",
+        "description": "互联网最受欢迎的 JavaScript 语法高亮工具，支持 Node.js 和网络",
+        "img": "highlight.png",
+        "link": "https://highlightjs.org/",
+        "tags": []
+      },
+      {
+        "title": "Sandpack",
+        "subtitle": "可以在网页中嵌入代码运行的工具",
+        "updateTime": "2020-04-23",
+        "description": "Sandpack 是由 CodeSandbox 提供的一个工具，主要用于在网页上实时嵌入和运行代码编辑器。通过 Sandpack，开发者可以在网站上集成一个交互式的代码编辑环境，支持多种编程语言和框架。",
+        "img": "sandpack.png",
+        "link": "https://sandpack.codesandbox.io/",
+        "tags": []
+      },
+      {
+        "title": "reactflow",
+        "subtitle": "react流程编排库",
+        "updateTime": "2020-04-23",
+        "description": "React Flow 是一个用于构建交互式节点图和流程图的库，专为 React 应用程序设计。它提供了一套强大的工具和组件，使开发者能够轻松创建复杂的图形界面，支持节点的拖拽、缩放、连接等交互功能。React Flow 非常适合用于数据可视化、流程管理、工作流设计等场景。该库具有高度的可定制性，允许开发者根据具体需求调整节点和边的样式和行为。通过 React Flow，开发者可以快速构建出直观且功能丰富的图形用户界面。",
+        "img": "reactflow.png",
+        "link": "https://reactflow.dev/",
+        "tags": []
+      }
+    ]
+  },
+  {
+    "title": "工具",
+    "subtitle": "工具相关的导航",
+    "description": "工具相关的导航",
+    "updateTime": "2020-04-23",
+    "children": [
+      {
+        "title": "excalidraw",
+        "subtitle": "在线绘图工具",
+        "updateTime": "2020-04-23",
+        "description": "Excalidraw 是一个在线绘图工具，主要用于创建手绘风格的图表和草图。它的界面简单直观，允许用户快速绘制流程图、思维导图、用户界面草图等",
+        "img": "excalidraw.png",
+        "link": "https://excalidraw.com/",
+        "tags": []
+      },
+      {
+        "title": "snippet-generator",
+        "subtitle": "在线vsCode模版生成",
+        "updateTime": "2020-04-23",
+        "description": "Snippet Generator 是一个在线工具，用于生成代码片段（snippets），特别是为 Visual Studio Code（VSCode）等代码编辑器创建自定义代码片段。",
+        "img": "snippet-generator.png",
+        "link": "https://snippet-generator.app",
+        "tags": []
+      }
+    ]
+  },
+  {
+    "title": "软件",
+    "subtitle": "软件相关的导航",
+    "description": "软件相关的导航",
+    "updateTime": "2020-04-23",
+    "children": [
+      {
+        "title": "obsidian",
+        "subtitle": "笔记应用程序",
+        "updateTime": "2020-04-23",
+        "description": "Obsidian 是一款强大的笔记应用程序，专注于帮助用户管理和组织信息。它以 Markdown 为基础，允许用户创建和编辑笔记，同时支持双向链接功能，使得笔记之间的关系更加直观和易于导航",
+        "img": "obsidian.jpeg",
+        "link": "https://obsidian.md/",
+        "tags": []
+      }
+    ]
+  }
+]
