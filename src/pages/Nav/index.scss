@@ -11,13 +11,17 @@
 
   height: 100vh;
   background: #000;
+  overflow: hidden;
 
 
   .content {
+    height: 100%;
     padding: 24px;
     position: absolute;
     z-index: 999;
     color:#fff;
+    overflow-y: auto;
+
   }
 
   .sky {

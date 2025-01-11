@@ -7,7 +7,7 @@
     "children": [
       {
         "title": "highlight.js",
-        "subtitle": "",
+        "subtitle": "语法高亮",
         "updateTime": "2020-04-23",
         "description": "互联网最受欢迎的 JavaScript 语法高亮工具，支持 Node.js 和网络",
         "img": "highlight.png",
@@ -56,6 +56,50 @@
         "description": "Snippet Generator 是一个在线工具，用于生成代码片段（snippets），特别是为 Visual Studio Code（VSCode）等代码编辑器创建自定义代码片段。",
         "img": "snippet-generator.png",
         "link": "https://snippet-generator.app",
+        "tags": []
+      }
+    ]
+  },
+  {
+    "title": "设计",
+    "subtitle": "设计相关的导航",
+    "description": "设计相关的导航",
+    "updateTime": "2020-04-23",
+    "children": [
+      {
+        "title": "Muzli",
+        "subtitle": "灵感和创意资源",
+        "updateTime": "2025-01-11",
+        "description": "Muzli 是一个专注于设计灵感和创意资源的网站，主要面向设计师、创意工作者和开发者。它通过聚合和推荐各种设计相关的内容，帮助用户快速获取灵感和了解最新的设计趋势。",
+        "img": "muzli.png",
+        "link": "https://muz.li/",
+        "tags": []
+      },
+      {
+        "title": "Muzli Search",
+        "subtitle": "搜索设计灵感",
+        "updateTime": "2025-01-11",
+        "description": "Muzli Search 是 Muzli 提供的一个专门用于搜索设计灵感和创意资源的工具。这个搜索引擎聚合了来自多个设计平台和网站的内容，帮助用户快速找到与设计相关的灵感、作品和资源。",
+        "img": "muzli-search.png",
+        "link": "https://search.muz.li/",
+        "tags": []
+      },
+      {
+        "title": "Muzli Colors",
+        "subtitle": "配色方案和颜色灵感",
+        "updateTime": "2025-01-11",
+        "description": "Muzli Colors 是 Muzli 提供的一个专门用于配色方案和颜色灵感的网站工具。它帮助设计师和创意工作者快速找到和创建色彩搭配，适用于各种设计项目。",
+        "img": "muzli-colors.png",
+        "link": "https://colors.muz.li/",
+        "tags": []
+      },
+      {
+        "title": "Muzli Inspiration",
+        "subtitle": "提供设计灵感和创意资源",
+        "updateTime": "2025-01-11",
+        "description": "Muzli Inspiration 是 Muzli 网站上的一个专门页面，致力于提供设计灵感和创意资源。这个页面汇集了来自各个设计领域的精选作品和趋势，帮助设计师和创意工作者获取灵感。",
+        "img": "muzli.png",
+        "link": "https://muz.li/inspiration/",
         "tags": []
       }
     ]

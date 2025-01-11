@@ -25,7 +25,16 @@ export default memo((props: IProps) => {
           >
             {data.title}
           </Avatar>
-          <div className="item-title">{data?.title}</div>
+
+          <div className="item-titles">
+            <div className="item-title">{data?.title}</div>
+            <Typography.Paragraph
+              ellipsis={{ rows: 1, tooltip: { title: data?.subtitle } }}
+              className="item-subtitle"
+            >
+              {data?.subtitle}
+            </Typography.Paragraph>
+          </div>
         </Space>
         <Typography.Paragraph
           ellipsis={{ rows: 2, tooltip: { title: data?.description } }}
