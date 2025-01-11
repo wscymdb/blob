@@ -22,6 +22,7 @@ export default defineConfig({
     logo: '/logo.jpg',
     nav: [
       { text: '首页 🏠', link: '/' },
+      { text: 'codeLine', link: '/css-demo' },
       { text: '前端 💻', link: '/web/javascript' },
       { text: '前端运维 🛠️', link: '/web-ops/linux' },
       { text: '测试 🦄', link: '/test/' },
