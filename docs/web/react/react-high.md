@@ -404,7 +404,72 @@ export class NavBar extends Component {
 }
 ```
 
-## 4.3.作用域插槽的实现
+## 4.3.具名插槽的实现
+
+**父组件**
+
+- 其实就是给元素添加一个自定义的属性，这里取名叫 slot(名称任意)
+- babel 会把 jsx 转换成 createElement 的形式 createElement 会把元素转换成虚拟 dom 元素上面添加的属性都放到虚拟 dom 对象的 props 中
+
+```tsx
+function App() {
+  return (
+    <div className="App">
+      <Slot>
+        <header style={{ color: 'red' }} slot="header">
+          页头
+        </header>
+        <header style={{ color: 'red' }} slot="header">
+          页头2
+        </header>
+        <header slot="footer">页脚</header>
+        <header>默认的</header>
+      </Slot>
+    </div>
+  );
+}
+```
+
+**子组件**
+
+- 可以借助 React.toArray 方法把 children 转换成数组 省的手动去写判断条件进行转换
+
+```tsx
+// 组件名称任意 不一定叫Slot
+const Slot = (props: any) => {
+  // children可能是一个数组或者一个对象或者undefined，Recat的Children.toArray方法可以将其转换为数组 就不用我们写判断转为数组了
+  const children: Record<string, any>[] = React.Children.toArray(
+    props.children,
+  );
+  const headerSlot: Record<string, any>[] = [];
+  const footerSlot: Record<string, any>[] = [];
+  const defaultSLot: Record<string, any>[] = [];
+
+  console.log(children);
+
+  children.forEach((child) => {
+    const slot = child.props.slot;
+    if (slot === 'header') {
+      headerSlot.push(child);
+    } else if (slot === 'footer') {
+      footerSlot.push(child);
+    } else {
+      defaultSLot.push(child);
+    }
+  });
+  return (
+    <div>
+      {headerSlot}
+      <div>分割线</div>
+      {defaultSLot}
+      <div>分割线</div>
+      {footerSlot}
+    </div>
+  );
+};
+```
+
+## 4.4.作用域插槽的实现
 
 **父组件传入的属性是一个函数，然后子组件调用这个函数进行参数的传递，从而实现作用域插槽**
 
