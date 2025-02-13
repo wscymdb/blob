@@ -76,6 +76,11 @@ export default defineConfig({
             { text: '前端工具', link: '/web/engineering/tool' },
           ],
         },
+        {
+          text: 'CSS预编译工具',
+          items: [{ text: 'less', link: '/web/CSSPreprocessor/less' }],
+        },
+        { text: '移动端适配', link: '/web/flexable' },
       ],
       '/web-ops/': [
         {
