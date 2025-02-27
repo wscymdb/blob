@@ -101,6 +101,15 @@
         "img": "muzli.png",
         "link": "https://muz.li/inspiration/",
         "tags": []
+      },
+      {
+        "title": "Dribbble",
+        "subtitle": "设计师作品展示与交流平台",
+        "updateTime": "2025-01-11",
+        "description": "Dribbble 是一个面向设计师和创意专业人士的在线社区和展示平台。用户可以在这个平台上分享他们的设计作品，包括平面设计、插画、UI/UX设计、动画等。",
+        "img": "dribbble.png",
+        "link": "https://dribbble.com/",
+        "tags": []
       }
     ]
   },
