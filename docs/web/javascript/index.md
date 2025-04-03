@@ -1799,6 +1799,73 @@ function then(cb) {
 }
 ```
 
+### 10.4.2.Promise 中的 then 和 catch 执行逻辑
+
+```javascript
+const promiseResolve = new Promise((resolve, reject) => {
+  resolve('aaa');
+});
+
+/**
+ * 输出结果是
+ * aaa
+ * aaa
+ * undefined
+ *
+ * 这里所有的then都会执行的原因是因为每个then都会返回一个新的promise对象
+ * 因为后面有then方法进行了链式调用所以每个then都会执行
+ */
+promiseResolve
+  .then((res) => {
+    console.log(res);
+    return res;
+  })
+  .then((res) => {
+    console.log(res);
+    // 这里如果没写return 相当于Promise.resolve(undefined)
+  })
+  .catch((err) => {
+    console.log(err);
+    return err;
+  })
+  .then((res) => {
+    console.log(res);
+    return res;
+  });
+
+const promiseReject = new Promise((resolve, reject) => {
+  reject('ss');
+});
+
+/**
+ * 输出结果是
+ * ss
+ * ss
+ *
+ * 首先会执行catch方法，
+ * 然后如果cath中有return那么相当于Promise.resolve(return的值)
+ * 如果没有return那么相当于Promise.resolve(undefined)
+ * 所以这个catch也会返回一个新的promise对象 那么后续的then方法都会执行
+ */
+promiseReject
+  .then((res) => {
+    console.log(res);
+    return res;
+  })
+  .then((res) => {
+    console.log(res);
+    // 这里如果没写return 相当于Promise.resolve(undefined)
+  })
+  .catch((err) => {
+    console.log(err);
+    return err;
+  })
+  .then((res) => {
+    console.log(res);
+    return res;
+  });
+```
+
 ## 10.5.catch 方法相关
 
 - 可以调用多次 catch 方法，里面的回调都会被调用
