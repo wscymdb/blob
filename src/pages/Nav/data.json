@@ -110,6 +110,15 @@
         "img": "dribbble.png",
         "link": "https://dribbble.com/",
         "tags": []
+      },
+      {
+        "title": "Pexels",
+        "subtitle": "免费高质量图片和视频资源平台",
+        "updateTime": "2025-01-11",
+        "description": "Pexels 是一个提供高质量、免版权的免费图片和视频素材的网站，适合个人和商业用户使用，支持多场景搜索和下载，帮助设计师、创意工作者和内容创作者轻松获取灵感和资源。",
+        "img": "pexels.png",
+        "link": "https://www.pexels.com/zh-cn/",
+        "tags": ["免费素材", "图片平台", "视频素材", "免版权", "创意资源"]
       }
     ]
   },
