@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import llmstxt from 'vitepress-plugin-llms';
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -120,5 +121,8 @@ export default defineConfig({
       ],
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/wscymdb/blob' }],
+  },
+  vite: {
+    plugins: [llmstxt()],
   },
 });
