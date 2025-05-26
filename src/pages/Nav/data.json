@@ -136,6 +136,24 @@
         "img": "obsidian.jpeg",
         "link": "https://obsidian.md/",
         "tags": []
+      },
+      {
+        "title": "uTools",
+        "subtitle": "高效启动和工具集",
+        "updateTime": "2025-05-26",
+        "description": "uTools 是一款专注于提升用户效率的启动器工具，具有强大的插件生态和跨平台支持。它提供了简洁的全局快捷搜索功能，用户可以快速启动应用、搜索文件、处理文本等。此外，uTools 的插件市场为其带来了额外的功能扩展，如 JSON 格式化、代码调试、翻译工具以及各种日常工具集合。适用于开发者、设计师、办公人士等需要简化重复任务和提升效率的用户。",
+        "img": "utools.png",
+        "link": "https://www.u-tools.cn/index.html",
+        "tags": ["启动器", "效率工具", "插件生态", "生产力"]
+      },
+      {
+        "title": "Raycast",
+        "subtitle": "效率型启动器",
+        "updateTime": "2025-05-26",
+        "description": "Raycast 是一款专为 macOS 开发的效率型启动器工具，可以帮助用户快速完成搜索、启动应用、执行命令等任务。它通过键盘快捷方式极大地提升工作效率，并支持插件系统，为开发者提供自定义扩展功能。Raycast 的设计简洁优雅，适合程序员、设计师以及效率工具爱好者使用，同时内置了强大的团队协作功能，可用于共享脚本、优化工作流。",
+        "img": "raycast.png",
+        "link": "https://raycast.com/",
+        "tags": ["效率启动器", "macOS", "快捷搜索", "插件拓展", "团队协作"]
       }
     ]
   }
