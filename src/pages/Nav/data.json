@@ -156,5 +156,31 @@
         "tags": ["效率启动器", "macOS", "快捷搜索", "插件拓展", "团队协作"]
       }
     ]
+  },
+  {
+    "title": "其他",
+    "subtitle": "其他",
+    "description": "其他",
+    "updateTime": "2020-04-23",
+    "children": [
+      {
+        "title": "Indie Goodies",
+        "subtitle": "优秀的开源 Mac 应用汇总",
+        "updateTime": "2023-10-01",
+        "description": "Indie Goodies 是一个专注于收集和分享开源的 Mac 应用程序的网站。这些应用程序涵盖了生产力工具、创意工具及开发相关工具，为 Mac 用户提供了丰富的选择和高质量的开源解决方案。",
+        "img": "indiegoodies.png",
+        "link": "https://indiegoodies.com/awesome-open-source-mac-apps",
+        "tags": []
+      },
+      {
+        "title": "eTempMail",
+        "subtitle": "一次性临时邮箱",
+        "updateTime": "2023-10-01",
+        "description": "eTempMail 是一项一次性临时邮箱服务(可以提供教育邮箱)，允许用户快速创建匿名邮箱地址，用于保护在线隐私和避免垃圾邮件侵扰。无需注册，即可免费使用。",
+        "img": "etempmail.png",
+        "link": "https://etempmail.com/",
+        "tags": []
+      }
+    ]
   }
 ]
