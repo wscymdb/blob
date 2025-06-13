@@ -158,6 +158,32 @@
     ]
   },
   {
+    "title": "粤语学习",
+    "subtitle": "粤语学习",
+    "description": "其粤语学习他",
+    "updateTime": "2025-06-13",
+    "children": [
+      {
+        "title": "JyutPing Mandarin",
+        "subtitle": "普通话拼音在线转注工具",
+        "updateTime": "2023-10-01",
+        "description": "JyutPing Mandarin 提供普通话拼音转换服务，允许用户轻松将中文文本转化为标准拼音标注，用于学习和语言教学。支持简体和繁体中文输入，操作直观便捷。",
+        "img": "jyutping-mandarin.png",
+        "link": "https://jyutping.org/cmn/",
+        "tags": []
+      },
+      {
+        "title": "PolyU Cantonese",
+        "subtitle": "香港理工大学粤语学习资源平台",
+        "updateTime": "2023-10-01",
+        "description": "PolyU Cantonese 是香港理工大学中文及双语学系提供的粤语学习资源平台，致力于帮助学习者掌握粤语拼音、发音及日常用语。该平台包含丰富的教学资料和在线工具，非常适合学生及语言爱好者。",
+        "img": "polyu-cantonese.jpeg",
+        "link": "https://www.polyu.edu.hk/clc/cantonese/home/",
+        "tags": []
+      }
+    ]
+  },
+  {
     "title": "其他",
     "subtitle": "其他",
     "description": "其他",
