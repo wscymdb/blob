@@ -14,3 +14,4 @@
 /docs/.vitepress/dist
 /.mfsu
 .swc
+/**/.DS_Store
