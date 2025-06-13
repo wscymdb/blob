@@ -28,7 +28,6 @@ export default memo((props: NavCard) => {
           }}
           dataSource={data}
           renderItem={(item, index) => {
-            console.log(item);
             return (
               <List.Item>
                 <NavCardItem key={index} data={item} />

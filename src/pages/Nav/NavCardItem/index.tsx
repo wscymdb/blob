@@ -14,6 +14,14 @@ export default memo((props: IProps) => {
     window.open(data?.link);
   };
 
+  const getImg = (img: string) => {
+    try {
+      return require(`@/assets/images/nav/${img}`);
+    } catch {
+      return '';
+    }
+  };
+
   return (
     <div className="nav-card-item" onClick={handleClick}>
       <Flex vertical>
@@ -21,7 +29,7 @@ export default memo((props: IProps) => {
           <Avatar
             // 谷歌获取图标的地址 但是需要梯子
             // src={`https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${data?.link}/&size=128`}
-            src={require(`@/assets/images/nav/${data.img}`)}
+            src={getImg(data.img)}
           >
             {data.title}
           </Avatar>
