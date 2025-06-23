@@ -7,6 +7,8 @@ export default defineConfig({
   description: '葡挞的资料库',
   base: '/flow/docs/',
   lastUpdated: true,
+  // 关闭死链 VitePress 对文档质量的一种校验，目的是确保文档中所有引用的资源路径都是有效的
+  ignoreDeadLinks: true,
   head: [['link', { rel: 'icon', href: '/flow/docs/favicon.ico' }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
