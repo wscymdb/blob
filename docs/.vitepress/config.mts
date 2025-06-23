@@ -26,6 +26,7 @@ export default defineConfig({
       { text: '测试 🦄', link: '/test/' },
       { text: '术语 🧑‍🏫', link: '/term/' },
       { text: '其他 📋', link: '/other/' },
+      { text: '拔高 ✍️', link: '/promote/01五层网络模型/' },
     ],
     sidebar: {
       '/other/': [
@@ -113,6 +114,35 @@ export default defineConfig({
           items: [
             { text: '技术领域', link: '/term/' },
             { text: '职场领域', link: '/term/business/' },
+          ],
+        },
+      ],
+      '/promote/': [
+        {
+          text: '网络',
+          items: [
+            { text: '01五层网络模型', link: '/promote/01五层网络模型/' },
+            { text: '02常见请求方法', link: '/promote/02常见请求方法/' },
+            { text: '03cookie', link: '/promote/03cookie/' },
+            { text: '04cookie和storage', link: '/promote/04cookie和storage/' },
+            { text: '05加密', link: '/promote/05加密/' },
+            { text: '06jwt', link: '/promote/06jwt/' },
+            { text: '07同源策略', link: '/promote/07同源策略/' },
+            { text: '08跨域-代理', link: '/promote/08跨域-代理/' },
+            { text: '09跨域-CORS', link: '/promote/09跨域-CORS/' },
+            { text: '10跨域-JSONP', link: '/promote/10跨域-JSONP/' },
+            { text: '12输入url地址后', link: '/promote/12输入url地址后/' },
+            { text: '14session', link: '/promote/14session/' },
+            { text: '15HTTP缓存协议', link: '/promote/15HTTP缓存协议/' },
+            { text: '16TCP协议', link: '/promote/16TCP协议/' },
+            { text: '17CSRF攻击', link: '/promote/17CSRF攻击/' },
+            { text: '18XSS攻击', link: '/promote/18XSS攻击/' },
+            { text: '19网络性能优化', link: '/promote/19网络性能优化/' },
+            { text: '20断点续传', link: '/promote/20断点续传/' },
+            { text: '21域名和DNS', link: '/promote/21域名和DNS/' },
+            { text: '22SSL、TLS、HTTPS', link: '/promote/22SSL、TLS、HTTPS/' },
+            { text: '23HTTP各版本差异', link: '/promote/23HTTP各版本差异/' },
+            { text: '24WebSocket', link: '/promote/24WebSocket/' },
           ],
         },
       ],
