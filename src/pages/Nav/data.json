@@ -215,6 +215,24 @@
         "img": "alltoall.png",
         "link": "https://www.alltoall.net/",
         "tags": []
+      },
+      {
+        "title": "iFixit",
+        "subtitle": "全球领先的修复指南和工具平台",
+        "updateTime": "2023-10-01",
+        "description": "iFixit 是一个提供修复指南和修复工具的全球平台，致力于帮助用户修复电子设备、家居用品、汽车等。通过详细的修复教程和社区支持，用户可以轻松找到拆解和修复所需的信息。",
+        "img": "ifixit.png",
+        "link": "https://zh.ifixit.com/",
+        "tags": ["修复", "工具", "电子设备", "教程", "社区支持"]
+      },
+      {
+        "title": "FMHY",
+        "subtitle": "免费资源和工具集锦",
+        "updateTime": "2023-10-01",
+        "description": "FMHY 是一个收录免费资源和工具的网站，包括各种软件、媒体资源、教育资源和实用工具。通过其分类的资源列表，用户可以轻松找到适合自己需求的内容。",
+        "img": "fmhy.png",
+        "link": "https://fmhy.net/",
+        "tags": ["免费资源", "工具", "软件", "教育", "媒体"]
       }
     ]
   }
