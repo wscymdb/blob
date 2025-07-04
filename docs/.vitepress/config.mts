@@ -26,6 +26,7 @@ export default defineConfig({
       { text: '测试 🦄', link: '/test/' },
       { text: '术语 🧑‍🏫', link: '/term/' },
       { text: '其他 📋', link: '/other/' },
+      { text: '笔记 📖', link: '/articles/1' },
       { text: '拔高 ✍️', link: '/promote/01五层网络模型/' },
     ],
     sidebar: {
@@ -115,6 +116,12 @@ export default defineConfig({
             { text: '技术领域', link: '/term/' },
             { text: '职场领域', link: '/term/business/' },
           ],
+        },
+      ],
+      '/articles/': [
+        {
+          text: '',
+          items: [{ text: 'shell文件执行的坑', link: '/articles/1' }],
         },
       ],
       '/promote/': [
