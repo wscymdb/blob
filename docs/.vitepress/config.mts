@@ -121,7 +121,10 @@ export default defineConfig({
       '/articles/': [
         {
           text: '',
-          items: [{ text: 'shell文件执行的坑', link: '/articles/1' }],
+          items: [
+            { text: 'shell文件执行的坑', link: '/articles/1' },
+            { text: 'CSS包含块', link: '/articles/2' },
+          ],
         },
       ],
       '/promote/': [
