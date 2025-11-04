@@ -464,6 +464,47 @@ module.exports = {
   }
   ```
 
+## 2.11.配置 Eslint
+
+- 可以使用 plugin 的方式进行配置
+- 也可以使用 laoder 的方式进行配置
+
+### plugin 方式配置
+
+**webpack.config.js 文件**
+
+```js
+// 下面的配置是使用EslintWebpackPlugin这个插件对ts和js结尾的文件进行检查
+const EslintWebpackPlugin = require('eslint-webpack-plugin')
+
+module.exports = {
+	...
+	plugins: [
+		new EslintWebpackPlugin({
+			// 要检查的文件
+			extensions: ['.js', '.ts'],
+			}),
+		],
+	}
+```
+
+**.exlintrc 文件**
+
+- **文件名要注意**
+  - eslint 版本 9xx 支持 esmodule 的写法 文件名称可以使用`eslint.config.js`
+  - eslint8xx 的版本只能用`.eslintrc`的文件名
+
+```json
+{
+  // 使用ts的解析器来解析
+  "parser": "@typescript-eslint/parser",
+
+  "plugins": ["@typescript-eslint"],
+
+  "extends": ["plugin:@typescript-eslint/recommended"]
+}
+```
+
 # 3.dev-server
 
 ## 3.1.webpack-dev-server

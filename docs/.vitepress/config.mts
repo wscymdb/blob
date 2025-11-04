@@ -76,6 +76,7 @@ export default defineConfig({
           items: [
             { text: 'node基础', link: '/web/engineering/node-basic' },
             { text: 'node高级', link: '/web/engineering/node-high' },
+            { text: 'webpack基础', link: '/web/engineering/webpack_basic' },
             { text: 'webpack', link: '/web/engineering/webpack' },
             { text: 'mysql', link: '/web/engineering/mysql' },
             { text: '前端工具', link: '/web/engineering/tool' },
