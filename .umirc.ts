@@ -10,6 +10,7 @@ export default defineConfig({
   layout: {
     title: '@umijs/max',
   },
+  esbuildMinifyIIFE: true, // 启用 IIFE 包装，解决 esbuild 辅助函数在多 chunk 中的命名冲突
   outputPath: path.resolve(__dirname, 'flow'),
   history: { type: 'hash' },
   publicPath: process.env.NODE_ENV === 'production' ? './' : `/`,
