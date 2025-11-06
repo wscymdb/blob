@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/engineering/webpack_basic.md",
+                "file": "web/engineering/webpack.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "webpack_basic"
+              "title": "webpack"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "92f4f888541637c1",
@@ -94,7 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "web/engineering/webpack_basic.md",
+                "file": "web/engineering/webpack.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "webpack_basic 的反向链接列表"
+              "title": "webpack 的反向链接列表"
             }
           },
           {
@@ -142,21 +143,21 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "web/engineering/webpack_basic.md",
+                "file": "web/engineering/webpack.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "webpack_basic 的大纲"
+              "title": "webpack 的大纲"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -169,10 +170,10 @@
       "bases:创建新数据库": false
     }
   },
-  "active": "d07661630211b849",
+  "active": "ed42be754eb7afed",
   "lastOpenFiles": [
-    "web/engineering/webpack.md",
     "web/engineering/webpack_basic.md",
+    "web/engineering/webpack.md",
     "web/engineering/node-basic copy.md",
     "web/engineering/webpack copy.md",
     "web/engineering/node-basic.md",

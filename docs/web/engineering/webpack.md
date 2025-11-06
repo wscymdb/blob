@@ -1459,6 +1459,166 @@ module.exports smp.wrap({
 - 比如有一个包时通过一个 Vue 组件打包的，但是非常的大，那么我们可以考虑是否可以拆分出多个组件，并且对其进行懒加载;
 - 比如一个图片或者字体文件特别大，是否可以对其进行压缩或者其他的优化处理;
 
+## 4.11 图片压缩
+
+- 之前使用的是`image-webpack-loader`这个 loader 做压缩的(这个库已停止维护了)
+- 现在官方给出的是使用[image-minimizer-webpack-plugin](https://github.com/webpack/image-minimizer-webpack-plugin)这个 plugin 做图片压缩了
+- 压缩图片是一件耗时的事情 所以建议区分一下环境 **生产环境**下才使用
+- ```js
+  // 生产环境举例
+  module.exports = {
+    ...
+    plugins[
+    ...(isProduct?new ImageMinimizerPlugin({xxx}):[])
+    ]
+  }
+  ```
+
+### 4.11.1 介绍
+
+- 该插件可以使用四种不同的工具来优化或生成图像：
+  - 这里列出我尝试过的更多的看[官网](https://github.com/webpack/image-minimizer-webpack-plugin)
+  - [`imagemin`](https://github.com/imagemin/imagemin) - 默认优化您的图像，因为它稳定可靠，并且适用于所有类型的图像。
+  - [`sharp`](https://github.com/lovell/sharp)  高性能 Node.js 图像处理模块，是调整 JPEG、PNG、WebP、AVIF 和 TIFF 图像大小和压缩速度最快的模块。使用 libvips 库。
+
+### 4.11.2 公共安装
+
+- 首先，需要安装  `image-minimizer-webpack-plugin`  以及一个图像优化器或生成器
+  - 就是上面说的 2 个任一个 建议使用`imagemin`
+- 使用**cnpm**安装，其他的安装会有问题 这里面会有二进制文件需要下载，cnpm 里面的镜像都是国内的不会丢包，我也尝试过用梯子配合 npm 安装还是不是，可能我的梯子太廉价
+
+```shell
+# 这里使用imagemin举例
+# 也可以使用sharp cnpm install image-minimizer-webpack-plugin sharp --save-dev
+# 就是说白了 你想用哪个图像优化器来进行优化 你就安装哪个
+cnpm install image-minimizer-webpack-plugin imagemin --save-dev
+```
+
+### 4.11.3 图片优化模式
+
+- 图片优化可以采用两种模式
+  - 1.  [无损](https://en.wikipedia.org/wiki/Lossless_compression) （不损失质量）。
+  - 2.  [有损](https://en.wikipedia.org/wiki/Lossy_compression) （存在一定质量损失）。
+
+### 4.11.4 使用`imagemin`举例
+
+#### 4.11.4.1 无损优化
+
+- [imagemin-gifsicle](https://github.com/imagemin/imagemin-gifsicle):用于压缩 gif 的
+- [imagemin-jpegtran](https://github.com/imagemin/imagemin-jpegtran):用于压缩 jpeg 的
+- [imagemin-optipng](https://github.com/imagemin/imagemin-optipng):用于压缩 png 的
+- [imagemin-svgo](https://github.com/imagemin/imagemin-svgo): 用于压缩 svg 的
+- 每个插件的详细配置具体看官方文档 **插件安装**
+
+```shell
+cnpm install imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo --save-dev
+```
+
+**webpack.config.js**配置
+
+```js
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+
+module.exports = {
+...
+	module:{
+		rules:[
+			{
+			test: /\.(jpe?g|png|svg)$/,
+			type: 'asset',
+			}
+		]
+	},
+	plugins:[
+		new ImageMinimizerPlugin(
+			{
+				minimizer: {
+					// ImageMinimizerPlugin.imageminMinify 这里其实会调用imagemin 所以为啥imagemin也要安装
+					implementation: ImageMinimizerPlugin.imageminMinify,
+					// 如果想要使用sharp要改成下面的配置
+					// implementation: ImageMinimizerPlugin.sharpMinify,
+					options: {
+						plugins: [
+							// png图片压缩
+							['optipng',{ optimizationLevel: 5 }],
+							// gif图片压缩
+							['gifsicle',{ interlaced: true }],
+							// jpeg图片压缩
+							['jpegtran',{ progressive: true }],
+							// svg压缩
+							['svgo',{
+					                plugins: [
+					                  {
+					                    name: 'preset-default',
+					                    params: {
+					                      overrides: {
+					                        cleanupIds: false,
+					                        inlineStyles: {
+					                          onlyMatchedOnce: false,
+					                        },
+					                      },
+					                    },
+					                  },
+					                ],
+					              }
+					        ]
+						]
+					}
+				}
+			}
+		)
+	]
+}
+```
+
+#### 4.11.4.2 有损优化
+
+**插件**
+
+- [imagemin-gifsicle](https://github.com/imagemin/imagemin-gifsicle):用于压缩 gif 的（没有无损的）
+- [imagemin-mozjpeg](https://github.com/imagemin/imagemin-mozjpeg):用于压缩 jpeg 的
+- [imagemin-pngquant](https://github.com/imagemin/imagemin-pngquant):用于压缩 png 的
+- [imagemin-svgo](https://github.com/imagemin/imagemin-svgo): 用于压缩 svg 的（没有无损的）
+- 每个插件的详细配置具体看官方文档
+
+```shell
+cnpm install imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant imagemin-svgo --save-dev
+```
+
+**配置** **有损和无损配置是一样的只不过名称要变成有损的名称**
+
+```js
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+
+module.exports = {
+...
+// 这里的配置都简化 详情参考无损配置
+	plugins:[
+		new ImageMinimizerPlugin(
+			{
+				minimizer: {
+					implementation: ImageMinimizerPlugin.imageminMinify,
+					options: {
+						plugins: [
+							// png图片压缩 至需要改名称即可
+							['pngquant',{ optimizationLevel: 5 }],
+							...
+						]
+					}
+				}
+			}
+		)
+	]
+}
+```
+
+### 4.11.5 其他
+
+- 更多的使用细节可以查看[官网](https://github.com/webpack/image-minimizer-webpack-plugin)
+- [使用 sharp 优化案例](https://github.com/webpack/image-minimizer-webpack-plugin?tab=readme-ov-file#optimize-with-sharp)
+
+## 4.12 响应式图片
+
 # 5.自定义 loader - plugin
 
 ## 5.1.自定义 loader

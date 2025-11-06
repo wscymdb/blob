@@ -200,6 +200,7 @@ module.exports = {
   1. 将 type 设置为 asset
   2. 添加一个 parser 属性，并且制定 dataUrl 的条件，添加 maxSize 属性
 - 如果`大于maxSize`的文件将会使用`asset/resource`类型，反之使用`asset/inline`类型
+- maxSize 的单位是字节(byte)
 
 ```javascript
 module: {
@@ -212,7 +213,7 @@ module: {
             type: "asset",
             parser: {
                 dataUrlCondition: {
-                    maxSize: 60 * 1024,
+                    maxSize: 60 * 1024, // 60KB
                 },
             },
         },
