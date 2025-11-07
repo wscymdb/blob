@@ -1619,6 +1619,197 @@ module.exports = {
 
 ## 4.12 响应式图片
 
+### 定义
+
+- 响应式图片是指能够根据设备屏幕大小和分辨率等因素动态调整显示大小和清晰度的图片
+- 在不同设备上显示同一张图片时，响应式图片可以自动选择最优的图片版本，从而保证图片显示效果的一致性和优化网站性能
+
+### 实现原理
+
+- 是使用\<img \/\> 的`srcset`和`sizes`属性完成
+- 具体查看官网[如何创建响应式图片](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Guides/Responsive_images#%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E5%93%8D%E5%BA%94%E5%BC%8F%E5%9B%BE%E7%89%87%EF%BC%9F)
+
+**srcset**
+
+- **`srcset`**  定义了浏览器可选择的图片集合以及每个图片的大小，每张图片信息的设置和前一个用逗号隔开
+- 格式：文件名+空格+图片固有宽度(物理像素，也就是图片真实的宽度)
+
+```html
+/* elva-fairy-480w.jpg 480w：表示这张图片的宽度是480 elva-fairy-800w.jpg
+800w：表示这张图片的宽度是800 */
+<img srcset="elva-fairy-480w.jpg 480w, elva-fairy-800w.jpg 800w" ... />
+```
+
+**sizes**
+
+- 定义了一组媒体条件（例如屏幕宽度）并且指明当某些媒体条件为真时，什么样的图片尺寸是最佳选择
+- 格式：sizes="\[媒体查询 1\] \[显示尺寸 1\], \[媒体查询 n\] \[显示尺寸 n\], \[默认显示尺寸\]"
+
+```jsx
+	/* 如果屏幕宽度小于等于600 使用480宽度的图片 否则使用800的 */
+	<img
+	  srcset="elva-fairy-480w.jpg 480w, elva-fairy-800w.jpg 800w"
+	  sizes="(max-width:600px) 480px, 800px"
+	  ...
+	/>
+```
+
+- Q: sizes="(max-width: 600px) 100vw, (max-width: 1000px) 70vw, 50vw" 那么 srcset 是怎么选择的呢
+- A: 浏览器的核心决策是基于 "有效像素密度"。它会计算：
+- 所需像素密度 = 图片的显示宽度（来自 sizes） / 视口宽度
+- 然后，它会从 srcset 中选择一张图片，这张图片的 固有像素（w 值） 能够以最接近的匹配度来满足这个 "所需像素密度"。
+
+```jsx
+	/* 视口 > 1000px 时，图片占屏幕的 50%。
+	 * 视口在 600px - 1000px 之间时，图片占屏幕的 70%。
+	 * 视口 < 600px 时，图片占满整个屏幕（100%）。
+	 */
+	<img
+	  srcset="elva-fairy-480w.jpg 480w, elva-fairy-800w.jpg 800w"
+	  sizes="(max-width: 600px) 100vw, (max-width: 1000px) 70vw, 50vw"
+	  ...
+	/>
+```
+
+### responsive-loader 基本使用
+
+上面说到要做响应式图片需要多张图片，所以需要借助[responsive-loader](https://github.com/dazuaz/responsive-loader?tab=readme-ov-file#responsive-loader)来完成图片的切割
+
+这个 loader 干嘛的呢：它从一张源图像创建多张图像，并返回一个  `srcset`
+
+人话：这个 loader 会按照我们的设置在构建的时候切割多张图片 然后导入的时候 导入的就不是图片本身而是一个对象
+
+**安装**
+
+- 注意要使用 cnpm 安装，否则会有问题 cnpm 就是国内的镜像 会把很多常用的包编译好然后我们之直接下载，如果使用 npm 还需要编译会出现各种奇怪的问题
+- 这里我们使用 sharp 作为图片转换器，其他的可以看官网文档
+
+```shell
+cnpm install responsive-loader sharp --save-dev
+```
+
+**配置**
+
+```js
+// webpack.config.js
+
+/** @type {import('webpack').Configuration} */
+module.exports = {
+  ...
+  module: {
+    rules: [
+		  {
+			test:/\.png$/
+            use: {
+              loader: 'responsive-loader',
+              options: {
+                // 指定所有要使用的宽度；如果指定的尺寸超过原始图像的宽度，则使用原始图像的宽度（即图像不会被放大）
+                // 数组的长度决定生成多少张图片 假设原图width:1080 那么2048生成的也只能是1080
+                sizes: [300, 600, 1024, 2048],
+
+                // 图片转换器 这里使用的是sharp
+                adapter: require('responsive-loader/sharp'),
+              },
+            },
+          }
+    ],
+  },
+
+}
+```
+
+**使用**
+
+```jsx
+import responsiveImg from './images/bg.png';
+
+// 这时候只要改变屏幕的尺寸就会按照我们设置的sizes来响应式选择图片
+<img srcset={responsiveImg.srcSet} sizes={`(min-width: 1080) 1080px,100vw`} />;
+```
+
+### 复杂案例
+
+上面的配置所有的 png 图片都会命中 loader，然后进行图片的裁切，但是项目中并不是所有的图片都有这样做所以就可以借助`oneOf`和`resourceQuery`来完成某些图片做响应式的操作
+
+oneOf 和 resourceQuery 作用可以看 webpack 基础中的讲解
+
+**webpack.config.js**
+
+```js
+module.exports = {
+	 ...
+	 module:{
+		 rules:[
+			 {
+				 test:/\.png$/,
+				 oneOf:[
+					 {
+						 resourceQuery:/custom/, //
+						 use:{
+							 loader:'responsive-loader,
+							 options:{
+								 sizes:[300,600,1080]
+								 adapter: require('responsive-loader/sharp'),
+							 }
+						 }
+					 },
+					 {
+						 type:'asset/resource'
+					 }
+				 ]
+			 }
+		 ]
+	 }
+}
+```
+
+**使用**
+
+```jsx
+import responsiveImg from './images/bg.png?custom';
+import notResponsiveImg from './images/a.png';
+
+// 这样responsiveImg就会命中响应式图片的loader 打包的时候就会生成多个图片 然后引入的时候就不是一个图片而是一个对象
+
+// notResponsiveImg就是普通的普通 不会生成多个图片 引入就可以直接使用
+```
+
+**注意** 如果 resourceQuery 是`sizes`或者`size`，那么 options.size 就会失效导入的时候就需要这么做
+
+```jsx
+// 所以建议resourceQuery使用别的字段 不然引入很麻烦
+import responsiveImage from 'img/myImage.jpg?sizes[]=300,sizes[]=600,sizes[]=1024';
+```
+
+```js
+module.exports = {
+	 ...
+	 module:{
+		 rules:[
+			 {
+				 test:/\.png$/,
+				 oneOf:[
+					 {
+						 resourceQuery:/sizes/,
+						 use:{
+							 loader:'responsive-loader,
+							 options:{
+							    // 无效 resourceQuery使用了sizes会和这里的冲突
+								 sizes:[300,600,1080]
+								 adapter: require('responsive-loader/sharp'),
+							 }
+						 }
+					 },
+					 {
+						 type:'asset/resource'
+					 }
+				 ]
+			 }
+		 ]
+	 }
+}
+```
+
 # 5.自定义 loader - plugin
 
 ## 5.1.自定义 loader

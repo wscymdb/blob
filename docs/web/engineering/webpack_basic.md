@@ -35,10 +35,10 @@
 
 **module.rules 配置**
 
-- rules 属性对应的值是一个`数组`: **[Rule]**
+- rules 属性对应的值是一个`数组`: **\[Rule\]**
 - 数组中存放的是一个个 Rule，`Rule是一个对象`，对象中可以设置多个属性
   - `test属性`：用于对 resource(资源)进行匹配，通常会设置成`正则表达式`
-  - `use属性`：对应的值是一个数组[UseEntry]
+  - `use属性`：对应的值是一个数组\[UseEntry\]
     - UseEntry 是一个对象，可以通过对对象的属性来设置一些其他属性
       - loader:必须有一个 loader 属性，对应的是一个字符串
       - options：可先的属性，值是一个字符串或对象，会被传入到 loader 中
@@ -71,11 +71,94 @@ module.exports = {
 };
 ```
 
-### 4.2.css-loader
+### 4.2 resourceQuery
 
-### 4.3.style-loader
+这是 rules 里面的一个属性，类型是一个正则，此选项用于测试请求字符串的查询部分（即从问号开始）。
 
-### 4.4.less-loader
+**注意 resourceQuery 和 test 并不冲突，test 匹配文件路径和文件名 resourceQuery 匹配的是?后面的**
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  //...
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        resourceQuery: /inline/,
+        use: 'url-loader',
+      },
+      {
+        test: /\.css$/,
+        resourceQuery: /custom/,
+        use: 'style-loader',
+      },
+    ],
+  },
+};
+```
+
+**举例**
+
+```jsx
+import from './index.css?custom'
+// 这样导入就会命中rules的最后一项
+// 因为resourceQuery匹配的是?后面的内容
+```
+
+### 4.3 oneOf
+
+**主要作用是提高规则匹配效率和避免冲突**
+
+这是 rules 里面的一个属性，类型是数组，他的作用是只查找一次，也就是从这个数组中从第一个开始查找，只要匹配到了，后面就不会继续查找，如果都没有匹配到就不会应用
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  //...
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        oneOf: [
+          // 这些规则按顺序匹配，第一个匹配成功后停止
+          //
+          {
+            resourceQuery: /inline/, // foo.css?inline
+            use: 'url-loader',
+          },
+          {
+            resourceQuery: /external/, // foo.css?external
+            use: 'file-loader',
+          },
+          {
+            use: 'file-loader', // 兜底 都没匹配到就会应用这个
+          },
+        ],
+      },
+    ],
+  },
+};
+```
+
+**举例**
+
+```jsx
+import from './index.css?inline'
+
+// 因为导入的是一个css文件 所以就会命中如下的规则
+// 然后又因为使用oneOf 所以就会在oneOf中从第一个开始查找
+// oneOf第一个item使用了resourceQuery
+// 所以本次导入就会命中，就会使用这个里面的内容，然后停止oneOf里面其余的查找
+```
+
+### 4.4.css-loader
+
+### 4.5.style-loader
+
+### 4.6.less-loader
 
 ## 5.postcss 工具
 
