@@ -1777,7 +1777,9 @@ import notResponsiveImg from './images/a.png';
 **注意** 如果 resourceQuery 是`sizes`或者`size`，那么 options.size 就会失效导入的时候就需要这么做
 
 ```jsx
-// 所以建议resourceQuery使用别的字段 不然引入很麻烦
+// 坏处是每次需要响应式的导入都需要写?xxx
+// 好处是每张图片都可以写自己的尺寸，不像在loader中配死了所有的都只有那些尺寸
+
 import responsiveImage from 'img/myImage.jpg?sizes[]=300,sizes[]=600,sizes[]=1024';
 ```
 

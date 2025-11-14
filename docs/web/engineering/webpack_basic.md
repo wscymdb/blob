@@ -1,6 +1,4 @@
-# webpack_basic
-
-## 1.定义
+# 1.定义
 
 - webpack 是一个静态的模块化打包工具，为现代的 JavaScript 应用程序
 - 官方解释
@@ -10,7 +8,7 @@
 - `模块化module`：webpack 默认支持各种模块化开发
 - `现代的modern`：现在的开发模式才需要打包
 
-## 2.安装
+# 2.安装
 
 - webpack 的安装目前分为：`webpack、webpack-cli`
 - **两者的关系**
@@ -19,7 +17,7 @@
   - 而`webpack-cli中代码执行时`，才是`真正利用webpack`进行编译和打包的过程
   - 所以在安装 webpack 时，需要同时安装 webpack-cli（第三方框架事实上没有用 webpack-cli 的，用的类似于自己的 vue-cervice-cli 的东西）
 
-## 3.常见指令
+# 3.常见指令
 
 **指定配置文件**
 
@@ -27,9 +25,139 @@
 - 如果想`换成其他的`，就这终端输入`webpack --config 自定义名称`
   - webpack --config a.js
 
-## 4.loader
+# 4.入口(entry)
 
-### 4.1.loader 配置方式
+## 单个入口简单写法
+
+**string 形式**
+
+```javascript
+module.exports = {
+  entry: './src/index',
+};
+```
+
+**string\[\]形式**
+
+- 这种情况下依赖项会按照数组的顺序依次加载
+
+```javascript
+// 打包的main.js中 会先引入index2的代码 然后引入index1的代码
+module.exports = {
+  entry: ['./src/index2', './src/index1'],
+};
+```
+
+## 函数写法
+
+- 这种写法方便拓展，可以动态配置入口
+
+```js
+// 示例 基于用户配置的动态入口
+module.exports = {
+  entry: async () => {
+    // 可以从 API、数据库或配置文件动态获取入口
+    const userConfig = await fetchUserConfig();
+    const entries = {};
+
+    userConfig.modules.forEach((module) => {
+      if (module.enabled) {
+        entries[module.name] = module.entryPath;
+      }
+    });
+
+    return entries;
+  },
+};
+```
+
+## 对象写法
+
+- 对象语法会比较繁琐。然而，这是应用程序中定义入口的最可扩展的方式。
+
+**多入口**
+
+```js
+// 这样打包的时候dist目录下就会有两个入口文件 分别是main.js和second.js
+module.exports = {
+  entry: {
+    main: './src/index.js',
+    second: './src/cc.js',
+  },
+};
+```
+
+**属性**
+
+- **dependOn**: 当前入口所依赖的入口。它们必须在该入口被加载前被加载。
+- **filename**: 指定要输出的文件名称。
+- **import**: 启动时需加载的模块。
+- **runtime**: 运行时 chunk 的名字。如果设置了，就会创建一个新的运行时 chunk。在 webpack 5.43.0 之后可将其设为 false 以避免一个新的运行时 chunk。
+- 更多见[官网](https://webpack.docschina.org/concepts/entry-points/#entry-description-object)
+
+**dependOn**
+
+vendor.js
+
+```js
+export const verndor = 'vendor';
+```
+
+index.js
+
+```js
+import { verndor } from './vendor';
+console.log(verndor);
+```
+
+webpack.config.js
+
+```js
+// 如果不使用dependOn字段 那么打包的时候vendor和main会各打包各自的
+// 如果使用了dependOn 那么打包的时候main.js不会打包vendor.js的内容 而是require进来
+module.exports = {
+  entry: {
+    vendor: './src/vendor.js',
+    main: {
+      // 指定入口文件
+      import: './src/index.js',
+      // 声明该入口的前置依赖
+      dependOn: 'vendor',
+    },
+  },
+};
+```
+
+**runtime**
+
+- **runtime**: 指定包含 Webpack 运行时代码的 chunk 名称
+- **运行时代码**: 包含模块加载、模块交互等 Webpack 自有功能的代码
+
+```js
+// 下面打包会多出一个runtime-main.js 这个里面放的是运行时的代码 比如浏览器是不认识cjs的require语法的 所以webpack就会自己实现一个
+// 如果runtime没写或者为false 那么打包的时候mian.js内就会有一套webpack自己实现的require方法
+// 如果不为false 那么就会生成runtime对应的value 如下示例中也就是runtime-main.js
+// 里面放的是require方法 然后mian.js就会生成require方法 而且引入runtime-main
+
+// 如果多入口的情况下runtime的value相同那么也只会打包一份运行时代码
+// 如果不同则会打包多个
+module.exports = {
+  entry: {
+    main: {
+      import: './src/index.js',
+      runtime: 'runtime-main',
+    },
+    main1: {
+      import: './src/index1.js',
+      runtime: 'runtime-main',
+    },
+  },
+};
+```
+
+# 4.loader
+
+## 4.1.loader 配置方式
 
 - `module.rules`中允许我们配置多个 loader
 
@@ -160,7 +288,7 @@ import from './index.css?inline'
 
 ### 4.6.less-loader
 
-## 5.postcss 工具
+# 5.postcss 工具
 
 **作用**
 
@@ -186,9 +314,9 @@ import from './index.css?inline'
 
 `npm install postcss-loader -D`
 
-### 5.1.使用 postcss 里面的插件
+## 5.1.使用 postcss 里面的插件
 
-#### **autoprefixer**
+### **autoprefixer**
 
 - autoprefixer 是给需要添加 css 前缀的属性添加前缀
 - 需要下载 npm install autoprefixer -D
@@ -261,7 +389,7 @@ module.exports = {
 };
 ```
 
-## 6.asset module type
+# 6.asset module type
 
 - webpack5 之前加载类似图片资源、文字资源需要用对应的 loader 进行处理，webpack5 内置了这些 loader，只需要设置对应的 type 即可
 - 资源模块类型
@@ -276,7 +404,7 @@ module.exports = {
   - `asset`：在 asset/inline 和 asset/resource 之间自动选择
     - 之前通过 url-loader，并配置资源体积实现
 
-### 6.1.**根据图片大小设置不同资源类型**
+## 6.1.**根据图片大小设置不同资源类型**
 
 - 开发中我们往往希望小点的照片使用 base64 格式，大点的照片生成一个单独的文件
 - 只需要两步
@@ -304,7 +432,7 @@ module: {
 }
 ```
 
-### 6.2.生成自定义的文件名
+## 6.2.生成自定义的文件名
 
 - 可以在 output 的 assetFilename 中设置
 - 也可以在`匹配对应规则之后设置(常用)`
@@ -338,12 +466,12 @@ module: {
 }
 ```
 
-## 7.babel 工具
+# 7.babel 工具
 
 - Babel 是一个工具链，主要用于旧浏览器或者环境中将 ECMAScript 2015+代码转换为向后兼容版本的 JavaScript；
 - 包括：语法转换、源代码转换等；
 
-### 使用 babel 中的插件
+## 使用 babel 中的插件
 
 - 单独设置 babel-loader 是不会将箭头函数、const 这些转成 es5 的代码的，需要使用插件进行配置
 - 这里使用 Babel 的预设插件
@@ -389,7 +517,7 @@ module: {
 - react
 - TypeScript
 
-## 8.resolve 模块
+# 8.resolve 模块
 
 - resolve 用于设置模块如何解析
   - 在开发中会有各种各样的模块依赖
@@ -435,7 +563,7 @@ module.exports = {
 };
 ```
 
-### **alias**
+## **alias**
 
 - 起别名
 
@@ -450,14 +578,14 @@ module.exports = {
 };
 ```
 
-## 9.webpack 常见的插件(plugin)
+# 9.webpack 常见的插件(plugin)
 
-### 9.1.认识 plugin
+## 9.1.认识 plugin
 
 - Loader 是`用于特定的模块类型`进行转换
 - Plugin 可以用于`执行更加广泛的任务`，比如打包优化、资源管理、环境注入等
 
-### 9.2.CleanWebpackPlugin
+## 9.2.CleanWebpackPlugin
 
 - 每次打包之后将之前的打包文件夹删除
 
@@ -480,7 +608,7 @@ module.exports = {
 };
 ```
 
-### 9.3.HtmlWebpackPlugin
+## 9.3.HtmlWebpackPlugin
 
 - 生成一个 html 文件
 
@@ -510,7 +638,7 @@ module.exports = {
 };
 ```
 
-### 9.4.DefinedPlugin
+## 9.4.DefinedPlugin
 
 - DefinedPlugin`允许在编译时创建配置的全局常量`
 - 是一个 webpack 的`内置插件`，无需安装
@@ -538,13 +666,13 @@ module.exports = {
   };
   ```
 
-## 10.Mode 配置
+# 10.Mode 配置
 
 - 可以告知 webpack`使用相应的内置优化`
   - 默认值是`production`
   - 可选值有：'none' | 'development' | 'production'
 
-## 11.devServer
+# 11.devServer
 
 - 监听代码变化，自动编译并且刷新浏览器
 - webpack-dev-server 在编译之后`不会生成文件到文件夹中`，而是启动一个本地服务，将编译好的代码放入到本地服务中，浏览器在过来请求拿到文件
@@ -557,9 +685,9 @@ module.exports = {
 
 `webpack serve`
 
-### 11.1.热模块替换(HMR)
+## 11.1.热模块替换(HMR)
 
-#### 定义
+### 定义
 
 - HMR 的全称是`Hot Module Replacement`
 - 模块热替换是指在 `应用程序运行过程中`，`替换、添加、删除模块`，而`无需刷新整个页面`
@@ -599,7 +727,7 @@ if (module.hot) {
 
 - 在`框架中`，框架已经对每个组件开启了 HMR，所以`不用手动设置`
 
-### 11.2.devServer 配置
+## 11.2.devServer 配置
 
 **port**
 

@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "web/engineering/webpack.md",
+                "file": "web/engineering/webpack_basic.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "webpack"
+              "title": "webpack_basic"
             }
           }
         ]
@@ -78,7 +78,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "92f4f888541637c1",
@@ -142,13 +143,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "web/engineering/webpack.md",
+                "file": "web/engineering/webpack_basic.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "webpack 的大纲"
+              "title": "webpack_basic 的大纲"
             }
           }
         ],
@@ -171,13 +172,13 @@
   },
   "active": "d4868bee4fcae265",
   "lastOpenFiles": [
+    "web/engineering/webpack.md",
+    "web/engineering/webpack_basic.md",
     "未命名 4.base",
     "未命名 3.base",
     "2025-11-07.md",
-    "web/engineering/webpack.md",
     "未命名.base",
     "index.md",
-    "web/engineering/webpack_basic.md",
     "web/engineering/node-basic.md",
     "未命名 2.base",
     "未命名 1.base",
