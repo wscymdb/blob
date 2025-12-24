@@ -343,19 +343,20 @@ import hh from './a.js';
 - `description`：描述信息，大多时候作为项目的基本描述
 - `author`：作者相关信息(发布时用到)
 - `license`：开源协议(发布时用到)
+- 等等
 
-**private 属性**
+#### **private **
 
 - `private`属性记录当前的项目`是否是私有`的
   - 当值为`true`，npm 是`不能发布他的`，为了防止私有项目或模块发布出去的方式
 
-**main 属性**
+#### **main **
 
 - `main`：设置`程序的入口`
   - 当引入模块的时候，只写文件夹，默认情况下会去这个文件夹下找 index 相关的文件
   - 使用`main属性来配置入口`，那么就会找 main 配置的相关文件
 
-**scripts 属性**
+#### **scripts **
 
 - `scripts`：用于配置一些脚本命令，以键值对的形式存在
 
@@ -375,30 +376,143 @@ import hh from './a.js';
   }
   ```
 
-**dependencies 属性**
+#### **dependencies **
 
 - `dependencies`：指定无论开发环境还是生产环境都需要依赖的包
 
-**devDenpendencies 属性**
+#### **devDenpendencies **
 
 - `devDenpendencies`: 开发环境需要的依赖包
 - npm install --save-dev
 
-**peerDependencies**
+#### **peerDependencies**
 
 - `peerDependencies`：表示`对等依赖`，也就是`一个依赖包，它必须是以另一个宿主包为前提的`
   - 比如 element-plus 依赖 vue3 的，那么 element-plus 的 packages.json 中就有`peerDependencies：vue3`,这样的字段，当使用 element-plus 的时候，如果当前项目没有 vue 就会提示用户这个包是依赖 vue 的
 
-**engines 属性**
+#### **engines **
 
 - `engines`：用于`指定Node和NPM的版本号`
 - 在安装的过程中，会先检查对应的引擎版本，如果`不符合就会报错`
 - 事实上也可以指定所在的操作系统“os”:['linux'],只是很少用到
 
-**browserslist 属性**
+#### **browserslist **
 
 - 用于配置打包后的 JavaScript 浏览器的兼容情况
 - 也可以单独在一个.browserslistrc 文件中进行配置
+
+#### **exports**
+
+`exports`  字段是 Node.js 12+ 引入的现代包导出规范，用于定义包的入口点。它比传统的  `main`  字段更强大、更严谨。
+
+**main 的弊端**
+
+```json
+// 使用main方式配置入口
+{
+  "main": "./lib/index.js"
+}
+```
+
+```js
+// 用户可以直接访问内部文件
+// 其实我们执行暴露your-package的index 但是用户却能访问其余的内部文件
+// 那么下次我们改动内部文件的时候用户要是通过访问内部文件方式引入就会有问题
+const pkg = require('your-package'); // 预期
+const internal = require('your-package/src/utils.js'); // 意外访问
+const secret = require('your-package/lib/private.js'); // 危险！
+```
+
+**export 完全避免 main 的弊端**
+
+```json
+// 使用exports方式配置入口
+{
+  "exports": {
+    ".": "./lib/index.js"
+  }
+}
+```
+
+```js
+// 用户只能访问exports声明的入口
+const pkg = require('your-package'); // 正确
+const internal = require('your-package/src/utils.js'); // 报错
+const secret = require('your-package/lib/private.js'); // 报错
+```
+
+**优先级规则**
+
+- ✅ `exports` 优先级高于 `main`
+- ✅ 同时存在时，Node.js 会优先使用 `exports`
+- ✅ 保留 `main` 主要用于向后兼容
+- exports 比起 main、module、types 优先级高
+
+**单包模式使用**
+
+- 这种模式下需要配合`type`字段来使用
+- 没写`type` 默认使用 commonjs
+- type:'module' 使用 esm
+
+```json
+// 简写形式
+{
+  "exports": "./index.js"
+}
+
+// 完整形式
+{
+  "exports": {
+    ".": "./index.js",
+    "./utils": "./lib/utils.js"
+  }
+}
+```
+
+**双模式包使用（CommonJS + ESM）**
+
+```json
+// package.json
+{
+ // ...
+
+ // .表示根路径，使用这个路径引入的入口配置 require('my-package') 或者import package from  'my-package'
+ // ./utils表示使用这个路径引入的入口配置 require('my-package/utils') 或者import package from  'my-package/utils'
+  "exports": {
+    ".": {
+      "require": "./cjs/index.js",    // 用于配置CommonJS 入口
+      "import": "./esm/index.mjs",     // 用于ES Modules 入口
+      "types": "index.d.ts".  // 类型声明的加载入口
+    },
+    "./utils": {
+      "require": "./cjs/utils.js", // 用于配置CommonJS 入口
+      "import": "./esm/utils.mjs"  // 用于ES Modules 入口
+    },
+    // 还可以使用通配符
+    "./*": {
+	    "require":"./dist/*.js",
+	    "import": "./dist/*.mjs"
+    },
+    "./local/*": {
+	    "require":"./dist/local/*.js",
+	    "import": "./dist/local/*.mjs"
+    }
+  }
+}
+
+```
+
+**使用示例**
+
+```javascript
+// CommonJS
+const pkg = require('my-package');
+const utils = require('my-package/utils');
+
+// ES Modules
+import pkg from 'my-package';
+import utils from 'my-package/utils';
+```
 
 ### 4.1.2.依赖的版本管理
 

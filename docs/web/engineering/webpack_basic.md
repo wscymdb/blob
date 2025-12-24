@@ -155,9 +155,9 @@ module.exports = {
 };
 ```
 
-# 4.loader
+# 5.loader
 
-## 4.1.loader 配置方式
+## 5.1.loader 配置方式
 
 - `module.rules`中允许我们配置多个 loader
 
@@ -199,7 +199,7 @@ module.exports = {
 };
 ```
 
-### 4.2 resourceQuery
+### 5.2 resourceQuery
 
 这是 rules 里面的一个属性，类型是一个正则，此选项用于测试请求字符串的查询部分（即从问号开始）。
 
@@ -235,7 +235,7 @@ import from './index.css?custom'
 // 因为resourceQuery匹配的是?后面的内容
 ```
 
-### 4.3 oneOf
+### 5.3 oneOf
 
 **主要作用是提高规则匹配效率和避免冲突**
 
@@ -282,13 +282,13 @@ import from './index.css?inline'
 // 所以本次导入就会命中，就会使用这个里面的内容，然后停止oneOf里面其余的查找
 ```
 
-### 4.4.css-loader
+### 5.4.css-loader
 
-### 4.5.style-loader
+### 5.5.style-loader
 
-### 4.6.less-loader
+### 5.6.less-loader
 
-# 5.postcss 工具
+# 6.postcss 工具
 
 **作用**
 
@@ -314,7 +314,7 @@ import from './index.css?inline'
 
 `npm install postcss-loader -D`
 
-## 5.1.使用 postcss 里面的插件
+## 6.1.使用 postcss 里面的插件
 
 ### **autoprefixer**
 
@@ -389,7 +389,7 @@ module.exports = {
 };
 ```
 
-# 6.asset module type
+# 7.asset module type
 
 - webpack5 之前加载类似图片资源、文字资源需要用对应的 loader 进行处理，webpack5 内置了这些 loader，只需要设置对应的 type 即可
 - 资源模块类型
@@ -404,7 +404,7 @@ module.exports = {
   - `asset`：在 asset/inline 和 asset/resource 之间自动选择
     - 之前通过 url-loader，并配置资源体积实现
 
-## 6.1.**根据图片大小设置不同资源类型**
+## 7.1.**根据图片大小设置不同资源类型**
 
 - 开发中我们往往希望小点的照片使用 base64 格式，大点的照片生成一个单独的文件
 - 只需要两步
@@ -432,7 +432,7 @@ module: {
 }
 ```
 
-## 6.2.生成自定义的文件名
+## 7.2.生成自定义的文件名
 
 - 可以在 output 的 assetFilename 中设置
 - 也可以在`匹配对应规则之后设置(常用)`
@@ -466,7 +466,7 @@ module: {
 }
 ```
 
-# 7.babel 工具
+# 8.babel 工具
 
 - Babel 是一个工具链，主要用于旧浏览器或者环境中将 ECMAScript 2015+代码转换为向后兼容版本的 JavaScript；
 - 包括：语法转换、源代码转换等；
@@ -517,7 +517,7 @@ module: {
 - react
 - TypeScript
 
-# 8.resolve 模块
+# 9.resolve 模块
 
 - resolve 用于设置模块如何解析
   - 在开发中会有各种各样的模块依赖
@@ -578,14 +578,14 @@ module.exports = {
 };
 ```
 
-# 9.webpack 常见的插件(plugin)
+# 10.webpack 常见的插件(plugin)
 
-## 9.1.认识 plugin
+## 10.1.认识 plugin
 
 - Loader 是`用于特定的模块类型`进行转换
 - Plugin 可以用于`执行更加广泛的任务`，比如打包优化、资源管理、环境注入等
 
-## 9.2.CleanWebpackPlugin
+## 10.2.CleanWebpackPlugin
 
 - 每次打包之后将之前的打包文件夹删除
 
@@ -608,7 +608,7 @@ module.exports = {
 };
 ```
 
-## 9.3.HtmlWebpackPlugin
+## 10.3.HtmlWebpackPlugin
 
 - 生成一个 html 文件
 
@@ -638,7 +638,7 @@ module.exports = {
 };
 ```
 
-## 9.4.DefinedPlugin
+## 10.4.DefinedPlugin
 
 - DefinedPlugin`允许在编译时创建配置的全局常量`
 - 是一个 webpack 的`内置插件`，无需安装
@@ -666,13 +666,13 @@ module.exports = {
   };
   ```
 
-# 10.Mode 配置
+# 11.Mode 配置
 
 - 可以告知 webpack`使用相应的内置优化`
   - 默认值是`production`
   - 可选值有：'none' | 'development' | 'production'
 
-# 11.devServer
+# 12.devServer
 
 - 监听代码变化，自动编译并且刷新浏览器
 - webpack-dev-server 在编译之后`不会生成文件到文件夹中`，而是启动一个本地服务，将编译好的代码放入到本地服务中，浏览器在过来请求拿到文件
@@ -685,7 +685,7 @@ module.exports = {
 
 `webpack serve`
 
-## 11.1.热模块替换(HMR)
+## 12.1.热模块替换(HMR)
 
 ### 定义
 
@@ -727,7 +727,7 @@ if (module.hot) {
 
 - 在`框架中`，框架已经对每个组件开启了 HMR，所以`不用手动设置`
 
-## 11.2.devServer 配置
+## 12.2.devServer 配置
 
 **port**
 
@@ -741,9 +741,98 @@ if (module.hot) {
 
 **open**
 
-- 是否打开浏览器
+- 是否打开浏览器(布尔类型)
 
 **compress**
 
 - 是否为打包后的代码压缩 gzip compression
-- 默认值是`true`
+- 默认值是`true`(布尔类型)
+
+**proxy**
+
+- 请求代理
+
+**[更多配置](https://webpack.docschina.org/configuration/dev-server/#devserver)**
+
+## 12.3.proxy
+
+作用：请求代理，底层使用的是  [http-proxy-middleware](https://github.com/chimurai/http-proxy-middleware)这个包，更多配置见[官网 proxy](https://webpack.docschina.org/configuration/dev-server/#devserverproxy)
+
+**举例**
+
+```js
+module.exports = {
+  //...
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000', // 代理目标地址
+        // /api开头的都会被重写掉 eg：http://localhost:/api/user->http://localhost:3000/user
+        pathRewrite: { '^/api': '' },
+      },
+    },
+  },
+};
+```
+
+## 12.4 [onBeforeSetupMiddleware](https://webpack.docschina.org/configuration/dev-server/#devserveronbeforesetupmiddleware)
+
+- devServer 底层使用的是 express，webpack5 新增功能
+- 假如我们没有自己的服务器 可以使用这个属性去返回数据，实现 mock 接口的功能，这里面其实就是一个内置的 express
+- 许你在所有内置中间件执行之前，插入你自己的自定义中间件。
+
+```js
+// webpack.config.js
+module.exports = {
+  devServer: {
+    onBeforeSetupMiddleware: function (devServer) {
+      if (!devServer) {
+        throw new Error('webpack-dev-server is not defined');
+      }
+
+      // 在这里添加自定义中间件
+      devServer.app.get('/api/custom', function (req, res) {
+        res.json({ message: '这是自定义接口' });
+      });
+
+      // 或者添加全局处理
+      devServer.app.use(function (req, res, next) {
+        console.log('请求到达:', req.url);
+        next(); // 继续后续处理
+      });
+    },
+  },
+};
+```
+
+## 12.5.historyApiFallback
+
+`boolean` `default:true`
+
+- `historyApiFallback`  主要是为了解决使用  **history 模式**的前端路由问题。
+- 不管访问那个路径，都会把请求重定向到 index.html 交给前端路由来进行处理
+-
+- 使用 history 路由特点
+  - 特点：URL 更简洁美观，像传统页面路径
+    - 问题：刷新或直接访问时会 404
+
+**开发模式解决方案**
+
+```js
+module.exports = {
+	...
+	devServer: {
+	  historyApiFallback: true
+	}
+}
+```
+
+**生产环境**：服务器配置重写规则(这里以 nginx 为例)
+
+```nginx
+	# Nginx
+	# 跟多细节参考nginx篇章
+	location / {
+	  try_files $uri $uri/ /index.html;
+	}
+```

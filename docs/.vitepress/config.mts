@@ -105,6 +105,10 @@ export default defineConfig({
           text: 'Jenkins',
           items: [{ text: 'Jenkins', link: '/web-ops/jenkins' }],
         },
+        {
+          text: 'Docker',
+          items: [{ text: '入门', link: '/web-ops/docker/basic' }],
+        },
       ],
       '/test/': [
         {
