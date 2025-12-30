@@ -156,6 +156,9 @@ docker exec my-web ls
 | **执行指令**<br>(非交互模式) | `docker exec` | `[名] [具体命令]` | **“遥控”容器**。<br>**不进入容器**，直接让容器执行一条命令并把结果返回给你。<br>**实战例子**：`docker exec custom-nginx nginx -t` (让 Nginx 容器自己检查配置文件)。 |
 | **拷贝文件** | `docker cp` | `[名]:[路径] [本地]` | **文件传输**。<br>从容器里把配置文件“偷”出来，或者把文件塞进去。 |
 | **清理镜像** | `docker rmi` | `[镜像ID]` | 删除本地不再使用的镜像文件（安装包）。 |
+| **下载镜像** | `docker pull` | [镜像名]:[标签]<br/>不写标签默认 latest | **下载镜像**。<br/>从 Docker Hub 拉取镜像到本地（如 nginx:alpine）。 |
+| **构建镜像** | `docker build` | -t [名]:[版]<br/>. (当前目录) | 根据 Dockerfile 制作属于你自己的镜像。 |
+| **查看镜像** | `docker images` | - | 列出本地下载好的所有镜像（查看本地仓库）。 |
 
 # 实战案例一：部署 Nginx 网页服务器
 
@@ -165,6 +168,7 @@ docker exec my-web ls
 
 ```bash
 # 后台运行nginx容器，命名my-web，主机8080端口映射容器80端口
+# 运行下面命令如果没有对应的镜像会自动拉取的
 docker run -d -p 8080:80 --name my-web nginx
 ```
 
