@@ -24,7 +24,7 @@ export default defineConfig({
     },
     logo: '/logo.jpg',
     nav: [
-      { text: '首页 🏠', link: '/' },
+      // { text: '首页 🏠', link: '/' },
       { text: '前端 💻', link: '/web/javascript' },
       { text: '前端运维 🛠️', link: '/web-ops/linux' },
       { text: '测试 🦄', link: '/test/' },
@@ -107,7 +107,11 @@ export default defineConfig({
         },
         {
           text: 'Docker',
-          items: [{ text: '入门', link: '/web-ops/docker/basic' }],
+          items: [
+            { text: '入门', link: '/web-ops/docker/basic' },
+            { text: 'volumes', link: '/web-ops/docker/volumes' },
+            { text: 'compose', link: '/web-ops/docker/compose' },
+          ],
         },
       ],
       '/test/': [
