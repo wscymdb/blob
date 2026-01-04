@@ -1696,3 +1696,38 @@ location / {
 4. **`=404`**： 如果 /index.html 也不存在，则返回 HTTP 404 错误。 (这是一个特殊的返回码，表示如果前面的文件路径不存在，则直接返回 HTTP 404 错误)。
 
 这种配置方式非常适合用于单页应用程序，因为它确保所有路径请求都能返回到应用的入口文件（通常是 `index.html`），从而由前端 JavaScript 代码来处理路由逻辑。
+
+# 16 nginx 常用命令速查表
+
+| 命令/操作 | 说明 | 常用场景 |
+| --- | --- | --- |
+| `nginx` | 启动 Nginx | 初次启动服务 |
+| `nginx -c /path/nginx.conf` | 指定配置文件启动 | 使用自定义配置文件 |
+| `nginx -s stop` | **快速停止**服务 | 立即停止，不等待请求完成 |
+| `nginx -s quit` | **优雅停止**服务 | 等待当前请求处理完成后停止 |
+| `nginx -s reload` | **重新加载配置** | 修改配置文件后应用新配置，无需重启服务 |
+| `nginx -s reopen` | **重新打开日志文件** | 日志切割后重新生成日志文件 |
+| `nginx -t` | **测试配置文件语法** | 检查配置文件是否正确，不实际运行 |
+| `nginx -T` | 测试并输出配置文件内容 | 查看实际生效的配置内容 |
+| `nginx -v` | 显示 Nginx **版本号** | 查看版本信息 |
+| `nginx -V` | 显示版本及**编译参数/模块** | 查看已编译的模块信息 |
+| `ps aux \| grep nginx` | 查看 Nginx 进程状态 | 检查 Nginx 是否运行及进程信息 |
+
+## 与 **systemd** 结合使用的命令（如果使用 systemd 管理）
+
+| 命令                      | 说明                                     |
+| ------------------------- | ---------------------------------------- |
+| `systemctl start nginx`   | 启动 Nginx 服务                          |
+| `systemctl stop nginx`    | 停止 Nginx 服务                          |
+| `systemctl restart nginx` | 重启 Nginx 服务                          |
+| `systemctl reload nginx`  | 重载配置文件（相当于 `nginx -s reload`） |
+| `systemctl status nginx`  | 查看 Nginx 服务状态                      |
+| `systemctl enable nginx`  | 设置开机自启动                           |
+| `systemctl disable nginx` | 取消开机自启动                           |
+
+---
+
+**提示**：
+
+- 执行 `nginx -s` 相关命令前，请确保 Nginx 正在运行。
+- 修改配置文件后，建议先执行 `nginx -t` 测试语法，再重载配置。
