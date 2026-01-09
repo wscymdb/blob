@@ -140,6 +140,7 @@ export default defineConfig({
             { text: 'CSS包含块', link: '/articles/2' },
             { text: '事件循环', link: '/articles/eventLoop' },
             { text: '浏览器渲染', link: '/articles/render' },
+            { text: '搭建monorepo工程', link: '/articles/monorepo' },
           ],
         },
       ],
