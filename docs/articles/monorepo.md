@@ -1,5 +1,3 @@
-// todo prttier 的补充 pre-commit 的内容补充
-
 # 为什么要用
 
 mono repo 方案，为了在一个 git 仓库中管理多个项目，且更友好的控制依赖版本
@@ -11,12 +9,14 @@ mono repo 方案，为了在一个 git 仓库中管理多个项目，且更友�
 | **pnpm workspace** | 1. 节省磁盘空间 <br>2. 严格的 node_modules <br>3. 高性能 |
 | **yarn workspace** | 经典方案 逐渐被 pnpm 取代 |
 | **npm workspace** | npm 7+ 支持 <br> 功能相对简单 |
-|  |  |
 
 # 初始化项目
 
 ```bash
 npm init -y
+
+# 初始化仓库
+git init
 ```
 
 # monorepo 配置
@@ -127,6 +127,7 @@ packages:
 
 **可以借助 vscode 插件在编写的时候做到错误的提示**
 
+- `Prettier` 代码格式化工具
 - `Error Lens` 更明显的提示错误
 - `ESLint` js 检查
 - `Stylelint` 样式的检查
@@ -168,11 +169,101 @@ packages:
   - 增强型 Commitizen 适配器
   - 提供更丰富、可定制的中文友好交互界面
 
-### lint-staged 优化 commit 检查
+## Prettier
 
-- 当工程量上去以后每次 commit 都会触发所有文件的检查那么开销是非常大的，
-- 借助 lint-staged 只用对 staged(暂存区)中的文件进行检查(git add .之后文件会进入暂存区)
-- 减少性能开销
+- 用于格式化代码的工具
+
+### **安装**
+
+```bash
+pnpm add prettier -wD
+```
+
+### 配置文件
+
+**.prettierrc.mjs**
+
+```js
+export default {
+  arrowParens: 'avoid',
+  endOfLine: 'lf',
+  printWidth: 120,
+  semi: false,
+  tabWidth: 4,
+  trailingComma: 'none',
+};
+```
+
+**.prettierignore**
+
+```
+.dumi/tmp
+.dumi/tmp-production
+*.yaml
+```
+
+### 结合 vscode 实现保存自动格式化
+
+配置 vscode 离开页面自动保存和保存自动格式化功能
+
+1.  `command`+`,` 进入设置
+2.  输入`Format On Save`搜索,勾选`Format On Save`
+3.  输入`Auto Save`,找到`Auto Save` 选择`onWindowChange`
+
+配置 vscode 项目的设置在根目录下创建`.vscode/settings.json`
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit", // 自动删除没有使用的引入
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // 默认格式化工具
+  "prettier.prettierPath": "node_modules/prettier/index.cjs" // 配置prettier使用内置的不使用全局的
+}
+```
+
+### 实现对 import 的排序
+
+上面配置了保存自动格式化，这里需要配置格式化的时候对 import 进行排序
+
+需要用到`@trivago/prettier-plugin-sort-imports`插件
+
+```bash
+pnpm add -wD @trivago/prettier-plugin-sort-imports
+```
+
+修改`.prettierrc.mjs`
+
+```js
+export default {
+...之前的配置
+plugins: ['@trivago/prettier-plugin-sort-imports'],
+  importOrder: [
+    // 1. react 相关
+    '^react$',
+    '^react-',
+    '^react/',
+    // 2. umi相关
+    '^umi$',
+    '^umi/',
+    // 3. antd 相关
+    '^antd$',
+    '^antd/',
+    '^@ant-design/',
+    // 4. 其他三方包 (node_modules 中的包)
+    '^[^@./]', // 非 @ 开头、非相对路径的包
+    // 5. @ 开头的别名引入
+    '^@/',
+    // 6. 本地其他组件引入 (相对路径)
+    '^[./](?!.*\\.(less|css)$)', // 相对路径，排除样式文件
+    // 7. 样式文件引入 (放在最后)
+    '^[./].*\\.(less|css)$',
+  ],
+  importOrderSeparation: false, // 自动在分组之间添加空行
+  importOrderSortSpecifiers: true, // 对同一个 import 语句中的多个导入成员进行排序
+}
+```
 
 ## Eslint
 
@@ -344,7 +435,7 @@ export default defineConfig([
 
 ### 为什么 ESLint 不报错但 IDE 报错？
 
-如果你发现 TS/JS 文件在 IDE 中爆红（报错），但是运行 `npm run lint` 时 ESLint 却显示通过，原因如下：
+如果你发现 TS/JS 文件在 IDE 中爆红（报错），但是运行 `npx eslint` 时 ESLint 却显示通过，原因如下：
 
 #### 核心原因：职责分工（去重）
 
@@ -423,6 +514,7 @@ pnpm add -wD stylelint stylelint-config-standard
 ### stylelint.config.mjs
 
 ```js
+import { defineConfig } from 'cspell';
 /**
  * @type {import("stylelint").Config} 的作用
  * JSDoc 类型注释
@@ -454,7 +546,7 @@ export default {
    * 和 apps 下的业务代码样式使用不同的严格程度。
    *
    *
-   * 根据自己的需要进行配置 如果默认的就够只有了那么久删除overrides
+   * 根据自己的需要进行配置 如果默认的就够只有了那么就删除overrides
    */
   overrides: [
     {
@@ -505,7 +597,7 @@ pnpm add -wD cspell
 
 **注意**
 
-- 我们指定了 dictionaryDefinitions 且开启了所以需要手动创建文件 要与 path 对应
+- 我们指定了 dictionaryDefinitions 且开启了所以需要**手动创建文件** 要与 path 对应
 
 ```js
 /**
@@ -568,47 +660,65 @@ export default defineConfig({
 
 ## 提交规范
 
-### Husky 和 commitlint
+### 初始化仓库
 
-请务必安装步骤执行
-
-#### 1.Husky
-
-- 管理 Git 生命周期中的各种事件（hook）
-- 在 Git 操作关键节点自动执行脚本
-
-**安装**
+如果已经初始化过了忽略这一步
 
 ```bash
-pnpm add -wD husky
+git init
 ```
 
-**初始化**
+**.gitignore**
+
+```
+node_modules
+.DS_Store
+**/build
+**/dist
+**/es
+
+# dumi
+**/.dumi
+**/tmp
+**/docs-dist
+
+.turbo
+
+.cspellcache
+
+pnpm-lock.yaml
+yarn.lock
+
+node_modules/
+
+.npmrc
+
+.obsidian
+
+```
+
+### Husky 和 Commitlint
+
+#### 介绍
+
+- **Husky**:管理 Git 生命周期中的各种事件（hook）,在 Git 操作关键节点自动执行脚本
+- **Commitlint**:主要是对  git commit  的注释内容进行检查，需要借助  Husky  的  commit-msg  钩子来调用 git hooks,从而触发校验
+
+#### 安装
+
+```sh
+pnpm add -wD husky @commitlint/cli @commitlint/config-conventional
+```
+
+#### 配置
+
+**初始化 husky**
 
 - `init`  命令简化了在项目中配置 Husky 的过程。它会在  `.husky/`  下创建一个  `pre-commit`  脚本，并更新  `package.json`  中的  `prepare`  脚本。
 
-```bash
+```shell
 # 这里使用的是v9 其余版本自行查阅
 npx husky init
-```
-
-**Husky 目录文件说明** 在  `.husky/`  目录下，不同的文件代表了 Git 操作的不同阶段
-
-| 文件名 | 触发时机 | 作用 | 文件中常见命令 |
-| --- | --- | --- | --- |
-| pre-commit | 执行 git commit 之前 | 检查代码本身，防止“垃圾代码”混入暂存区 | npx run type-check 或 npx lint-staged |
-| commit-msg | 编辑完提交信息   之后，但在提交完成   之前 | 检查提交的 commit，防止格式不规范 | npx commitlint |
-| pre-push | 执行 git push 之前 | 通常用来运行单元测试 | - |
-| -(目录) | 内部使用 |  | - |
-
-#### 2.commitlint
-
-主要是对  git commit  的注释内容进行检查，需要借助  Husky  的  commit-msg  钩子来触发。
-
-**安装**
-
-```bash
-pnpm add -wD @commitlint/cli @commitlint/config-conventional
 ```
 
 **commitlint.config.mjs**
@@ -624,12 +734,14 @@ export default {
 };
 ```
 
-#### 3. 关联 Husky 与 Commitlint
+#### 使用
 
-- `Husky`中已经生成了`.husky`目录
-- 我们需要在该目录下手动创建`commit-msg`文件，不要后缀，写入一下内容
+- 我们需要在`.husky`目录下手动创建`commit-msg`文件，不要后缀，写入一下内容
+- 或者终端输入 `echo "要插入的命令" > .husky/pre-commit`完成创建
 
 ```shell
+#!/bin/bash
+
 # npx --no: 表示强制使用本地项目安装的包。如果不加 --no，当本地没找到 commitlint 时，npx 会尝试去网上下载临时版本，这会导致版本不一致且速度变慢。加上后，如果本地没装依赖会直接报错，更安全。
 
 #  --: 这是一个分隔符。它告诉 npx：“我的参数配置到这里就结束了，后面所有的参数（比如 --edit）都是传给命令内部（commitlint）的，你别拦截”。
@@ -640,7 +752,7 @@ export default {
 npx --no -- commitlint --edit $1
 ```
 
-#### 4.验证
+#### 验证
 
 ```bash
 git add .
@@ -649,6 +761,25 @@ git commit -m '123' ❌ 报错 不符合规范
 
 git commit -m 'feat: 123' ✅ 符合规范
 ```
+
+#### Husky 目录文件说明
+
+在  `.husky/`  目录下，不同的文件代表了 Git 操作的不同阶段
+
+| 文件名 | 触发时机 | 作用 | 文件中常见命令 |
+| --- | --- | --- | --- |
+| pre-commit | 执行 git commit 之前 | 检查代码本身，防止“垃圾代码”混入暂存区 | npx run type-check 或 npx lint-staged |
+| commit-msg | 编辑完提交信息   之后，但在提交完成   之前 | 检查提交的 commit，防止格式不规范 | npx commitlint |
+| pre-push | 执行 git push 之前 | 通常用来运行单元测试 | - |
+| -(目录) | 内部使用 |  | - |
+
+#### 踩坑
+
+在使用`npx husky init`请务必确保你的 git 仓库已经 init，否则无法触发 husky 的 hook 文件
+
+当你要删除`.git`的时候，一定要重新的`npx husky init`，否则也会无法触发 husky 的 hook
+
+原因是**husky 依赖 Git 配置**
 
 ### commitizen 和 cz-git
 
@@ -804,3 +935,65 @@ export default {
 #### 5.使用
 
 使用`pnpm commit`命令来代替`git commit -m '' ` 命令即可
+
+### lint-staged 优化 commit 检查
+
+[官网](https://github.com/lint-staged/lint-staged)
+
+- 当工程量上去以后每次 commit 都会触发所有文件的检查那么开销是非常大的，
+- 借助 lint-staged 只用对 staged(暂存区)中的文件进行检查(git add .之后文件会进入暂存区)
+- 减少性能开销
+
+**安装**
+
+```bash
+pnpm add -wD lint-staged
+```
+
+**配置文件**
+
+lint-staged.config.mjs
+
+```js
+/**
+ * @filename: lint-staged.config.js
+ * @type {import('lint-staged').Configuration}
+ */
+export default {
+  // 数组中表示执行的命令
+  '*.{js,jsx,ts,tsx}': ['pnpm lint:es', 'pnpm spellcheck'],
+  '*.{css,less,scss}': ['pnpm lint:style', 'pnpm spellcheck'],
+};
+```
+
+**使用**
+
+- 只需执行以下命令，就会执行配置文件中的命令
+- 一般需要结合 git hooks ，每次 commit 就会自动执行，无需手动执行
+
+```bash
+npx lint-staged
+```
+
+### 结合 git hooks
+
+- 上面的提交规范其实都需要我们手动去执行命令才会运行对应的检查
+- 实际开发中一般是在 commit 的时候自动触发，所以需要借助 git hooks 自动执行
+
+**pre-commit**
+
+我们需要在`.husky/pre-commit`中添加
+
+```bash
+# 执行lint-staged检查
+npx lint-staged
+```
+
+**commit-msg**
+
+我们需要在`.husky/commit-msg`中添加
+
+```bash
+# 使用 commitlint 校验 Git 提交信息的格式规范。
+npx commitlint --edit $1
+```
