@@ -27,10 +27,10 @@ export default defineConfig({
       // { text: '首页 🏠', link: '/' },
       { text: '前端 💻', link: '/web/javascript' },
       { text: '前端运维 🛠️', link: '/web-ops/linux' },
+      { text: '笔记 📖', link: '/articles/1' },
       { text: '测试 🦄', link: '/test/' },
       { text: '术语 🧑‍🏫', link: '/term/' },
       { text: '其他 📋', link: '/other/' },
-      { text: '笔记 📖', link: '/articles/1' },
       { text: '拔高 ✍️', link: '/promote/01五层网络模型/' },
       { text: '网站导航 🧭', link: 'http://nav.puta99.fun' },
     ],
@@ -40,17 +40,18 @@ export default defineConfig({
           text: '',
           items: [
             { text: '环境区别', link: '/other/' },
-            { text: '无感刷新token', link: '/other/two-tokens' },
             { text: '网址收集', link: '/other/urls' },
           ],
         },
       ],
       '/web/': [
         {
+          collapsed: false,
           text: 'Javascript',
           items: [{ text: 'js高级', link: '/web/javascript' }],
         },
         {
+          collapsed: false,
           text: 'React',
           items: [
             { text: 'react基础', link: '/web/react' },
@@ -62,10 +63,12 @@ export default defineConfig({
         },
         {
           text: 'Typescript',
+          collapsed: false,
           items: [{ text: 'typescript', link: '/web/typescript' }],
         },
         {
           text: 'Git',
+          collapsed: false,
           items: [
             { text: 'Git查漏补缺', link: '/web/git' },
             { text: 'Git提交规范', link: '/web/git/git-commit' },
@@ -73,6 +76,7 @@ export default defineConfig({
         },
         {
           text: '工程化',
+          collapsed: false,
           items: [
             { text: 'node基础', link: '/web/engineering/node-basic' },
             { text: 'node高级', link: '/web/engineering/node-high' },
@@ -84,6 +88,7 @@ export default defineConfig({
         },
         {
           text: 'CSS预编译工具',
+          collapsed: false,
           items: [{ text: 'less', link: '/web/CSSPreprocessor/less' }],
         },
         { text: '移动端适配', link: '/web/flexable' },
@@ -91,6 +96,7 @@ export default defineConfig({
       '/web-ops/': [
         {
           text: 'Linux',
+          collapsed: false,
           items: [
             { text: 'Linux基础', link: '/web-ops/linux' },
             { text: 'Shell', link: '/web-ops/linux/shell' },
@@ -107,6 +113,7 @@ export default defineConfig({
         },
         {
           text: 'Docker',
+          collapsed: false,
           items: [
             { text: '入门', link: '/web-ops/docker/basic' },
             { text: 'volumes', link: '/web-ops/docker/volumes' },
@@ -140,7 +147,16 @@ export default defineConfig({
             { text: 'CSS包含块', link: '/articles/2' },
             { text: '事件循环', link: '/articles/eventLoop' },
             { text: '浏览器渲染', link: '/articles/render' },
-            { text: '搭建monorepo工程', link: '/articles/monorepo' },
+            { text: '无感刷新token', link: '/articles/two-tokens' },
+          ],
+        },
+        {
+          text: 'monorepo工程',
+          items: [
+            {
+              text: 'monorepo-basic',
+              link: '/articles/monorepo/monorepo-basic',
+            },
           ],
         },
       ],

@@ -1,6 +1,14 @@
+---
+title: monorepo
+---
+
 # 为什么要用
 
 mono repo 方案，为了在一个 git 仓库中管理多个项目，且更友好的控制依赖版本
+
+**注意** 本文章指用于搭建基本的架子，子包的设计和调试会在别的文章中写
+
+[github 仓库](https://github.com/wscymdb/monorepo-project/tree/v1.0.0)
 
 # monorepo 的实现方案
 
@@ -103,6 +111,8 @@ packages:
 ```
 
 ## 设计子包
+
+在别的文章中写
 
 ## 调试
 
@@ -223,6 +233,17 @@ export default {
 }
 ```
 
+### 手动使用
+
+- 上面配置了结合 vscode 保存时自动格式化
+- 但是你不能保证所有的成员都会配置
+- 所以这里列出了手动使用，后面会在提交代码的时候主动调用这个命令
+
+```shell
+# --write表示格式化后写入原来的文件
+npx prettier <文件路径> --write
+```
+
 ### 实现对 import 的排序
 
 上面配置了保存自动格式化，这里需要配置格式化的时候对 import 进行排序
@@ -278,7 +299,7 @@ plugins: ['@trivago/prettier-plugin-sort-imports'],
 pnpm add eslint -wD
 ```
 
-**添加脚本命令**
+### 添加脚本命令
 
 - 在`package.json`添加一个脚本命令方便后续使用
 - `--fix`表示启用自动修复功能
@@ -326,12 +347,15 @@ pnpm add eslint -wD @eslint/js  globals typescript-eslint eslint-plugin-react es
 
 ```ts
 import js from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import unusedImports from 'eslint-plugin-unused-imports';
 import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
 import path from 'node:path';
+import tseslint from 'typescript-eslint';
+
+// 引入插件
 
 // eslint9xx中采用的是flat模式 每个item都是一个规则
 // 下面的item如果相同规则可以被覆盖
@@ -411,6 +435,7 @@ export default defineConfig([
 
     // 自定义规则
     rules: {
+      // 禁止未使用的表达式（如函数调用但没有使用返回值）
       '@typescript-eslint/no-unused-expressions': [
         'error',
         {
@@ -419,19 +444,70 @@ export default defineConfig([
           allowTaggedTemplates: true, // 允许标记模板字符串
         },
       ],
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          argsIgnorePattern: '^_', // 忽略以下划线开头的参数
-          varsIgnorePattern: '^_', // 以下划线开头的变量不视为未使用
-          caughtErrorsIgnorePattern: '^_', // 以下划线开头的 catch 错误参数不视为未使用
-        },
-      ],
+
+      // 允许使用 any 类型
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ]);
 ```
+
+### 自动删除未使用的导入
+
+```sh
+pnpm add -Dw eslint-plugin-unused-imports
+```
+
+#### 配置文件
+
+- 在上面的配置文件中添加新的内容即可
+- 下面的内容不是完全的，都是新增的内容
+
+```js
+import unusedImports from "eslint-plugin-unused-imports"
+
+export default defineConfig([
+	...,
+    {
+	    ...,
+        plugins: {
+            "unused-imports": unusedImports
+        },
+
+	    ...,
+
+        // 自定义规则
+        rules: {
+	        ...,
+
+            // 关闭 TypeScript ESLint 的未使用变量检查（防止与下面的插件重复报错）
+            "@typescript-eslint/no-unused-vars": "off",
+
+            // 检查未使用的 import 语句并自动标记为错误
+            "unused-imports/no-unused-imports": "error",
+
+            // 统一检查未使用的变量、参数、导入等
+            "unused-imports/no-unused-vars": [
+                "error",
+                {
+                    vars: "all",
+                    varsIgnorePattern: "^_", // 处理以下划线开头的变量
+                    args: "after-used", // 只检查使用后的参数
+                    argsIgnorePattern: "^_", // 处理以下划线开头的参数
+                    ignoreRestSiblings: true, // 忽略剩余运算符的兄弟属性
+                    caughtErrorsIgnorePattern: "^_" // 以下划线开头的 catch 错误参数不视为未使用
+                }
+            ]
+        }
+    }
+])
+
+```
+
+#### 使用
+
+- 只需使用上面脚本中的`lint:fix`命令即可做到自动删除没有使用的引入
+- 后续会在 commit 中自动使用这个命令的
 
 ### 为什么 ESLint 不报错但 IDE 报错？
 
@@ -941,8 +1017,8 @@ export default {
 [官网](https://github.com/lint-staged/lint-staged)
 
 - 当工程量上去以后每次 commit 都会触发所有文件的检查那么开销是非常大的，
-- 借助 lint-staged 只用对 staged(暂存区)中的文件进行检查(git add .之后文件会进入暂存区)
-- 减少性能开销
+- 借助 lint-staged 只用对 staged(暂存区)中的文件进行检查(git add .之后文件会进入暂存区)减少性能开销
+- 如果 staged 中有文件被修改，lint-staged 会自动将其添加到暂存区
 
 **安装**
 
@@ -961,7 +1037,7 @@ lint-staged.config.mjs
  */
 export default {
   // 数组中表示执行的命令
-  '*.{js,jsx,ts,tsx}': ['pnpm lint:es', 'pnpm spellcheck'],
+  '*.{js,jsx,ts,tsx}': ['pnpm spellcheck', 'pnpm lint:fix', 'prettier --write'],
   '*.{css,less,scss}': ['pnpm lint:style', 'pnpm spellcheck'],
 };
 ```
