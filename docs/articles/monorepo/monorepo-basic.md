@@ -8,7 +8,7 @@ mono repo 方案，为了在一个 git 仓库中管理多个项目，且更友�
 
 **注意** 本文章指用于搭建基本的架子，子包的设计和调试会在别的文章中写
 
-[github 仓库](https://github.com/wscymdb/monorepo-project/tree/v1.0.0)
+[github 仓库](https://github.com/wscymdb/monorepo-project/tree/v1.0.1)
 
 # monorepo 的实现方案
 
@@ -93,13 +93,13 @@ packages:
     // 强制文件名大小写一致 (防止 Windows/Mac 大小写不敏感导致 Linux 构建失败)
     "forceConsistentCasingInFileNames": true,
 
-    /* --- 输出设置 --- */
-    // 生成 .d.ts 类型声明文件 (供其他包引用时有类型提示)
-    "declaration": true,
-    // 🚫 根目录不生成输出文件
-    // 核心配置：因为这是“基座”配置，根目录通常只做类型检查，不产生 .js 文件
-    // 具体的构建输出由各子包 (packages/*) 自己的 tsconfig 处理
-    "noEmit": true
+    // ---------- Monorepo 根目录专用配置 ----------
+    // 不生成 .d.ts 声明文件，声明文件应在子包中生成
+    "declaration": false,
+    // 禁止输出编译文件，根目录只用于类型检查和配置共享
+    "noEmit": true,
+    // 不启用复合项目模式，根目录不参与项目引用构建
+    "composite": false
   },
 
   /* --- 辅助配置 --- */
@@ -381,6 +381,7 @@ export default defineConfig([
       tseslint.configs.recommended, // tseslint内置规则
       reactHooks.configs.flat.recommended, // 专门针对 React Hooks
       pluginReact.configs.flat.recommended, // 通用 React 规则
+      pluginReact.configs.flat['jsx-runtime'], // 针对新 JSX 转换的规则
     ],
 
     // 语言环境设置 定义了 ESLint 如何解析和理解你的 JavaScript/TypeScript 代码
