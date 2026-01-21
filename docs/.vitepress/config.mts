@@ -145,6 +145,7 @@ export default defineConfig({
           items: [
             { text: 'shell文件执行的坑', link: '/articles/1' },
             { text: 'CSS包含块', link: '/articles/2' },
+            { text: 'vpn下github提交超时', link: '/articles/3' },
             { text: '事件循环', link: '/articles/eventLoop' },
             { text: '浏览器渲染', link: '/articles/render' },
             { text: '无感刷新token', link: '/articles/two-tokens' },
