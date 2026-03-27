@@ -89,7 +89,7 @@ export default defineConfig({
         {
           text: 'CSS预编译工具',
           collapsed: false,
-          items: [{ text: 'less', link: '/web/CSSPreprocessor/less' }],
+          items: [{ text: 'less', link: '/web/css-preprocessor/less' }],
         },
         { text: '移动端适配', link: '/web/flexable' },
       ],
