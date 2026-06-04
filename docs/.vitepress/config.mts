@@ -149,6 +149,7 @@ export default defineConfig({
             { text: '事件循环', link: '/articles/eventLoop' },
             { text: '浏览器渲染', link: '/articles/render' },
             { text: '无感刷新token', link: '/articles/two-tokens' },
+            { text: 'http缓存协议', link: '/articles/httpCache' },
           ],
         },
         {
@@ -168,7 +169,10 @@ export default defineConfig({
             { text: '01五层网络模型', link: '/promote/01五层网络模型/' },
             { text: '02常见请求方法', link: '/promote/02常见请求方法/' },
             { text: '03cookie', link: '/promote/03cookie/' },
-            { text: '04cookie和storage', link: '/promote/04cookie和storage/' },
+            {
+              text: '04cookie和storage',
+              link: '/promote/04cookie和storage/',
+            },
             { text: '05加密', link: '/promote/05加密/' },
             { text: '06jwt', link: '/promote/06jwt/' },
             { text: '07同源策略', link: '/promote/07同源策略/' },
@@ -184,7 +188,10 @@ export default defineConfig({
             { text: '19网络性能优化', link: '/promote/19网络性能优化/' },
             { text: '20断点续传', link: '/promote/20断点续传/' },
             { text: '21域名和DNS', link: '/promote/21域名和DNS/' },
-            { text: '22SSL、TLS、HTTPS', link: '/promote/22SSL、TLS、HTTPS/' },
+            {
+              text: '22SSL、TLS、HTTPS',
+              link: '/promote/22SSL、TLS、HTTPS/',
+            },
             { text: '23HTTP各版本差异', link: '/promote/23HTTP各版本差异/' },
             { text: '24WebSocket', link: '/promote/24WebSocket/' },
           ],
